@@ -1,0 +1,418 @@
+/**
+ * Bangladesh Tax Calculator Frontend Styles
+ * Includes three themes: default, dark, and light
+ */
+
+/* Base styles for all themes */
+.bd-tax-calculator-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+}
+
+.bd-tax-form {
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bd-tax-form-header h3 {
+    margin: 0 0 24px 0;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.bd-tax-form-body {
+    display: grid;
+    gap: 20px;
+}
+
+.bd-tax-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.bd-tax-field label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.bd-tax-field .required {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.bd-tax-field input,
+.bd-tax-field select {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.bd-tax-field input:focus,
+.bd-tax-field select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.bd-tax-field input.error,
+.bd-tax-field select.error {
+    border-color: #e74c3c;
+}
+
+.bd-tax-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.bd-tax-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.bd-tax-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.bd-tax-error {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.bd-tax-form-footer {
+    margin-top: 8px;
+}
+
+.bd-tax-submit-btn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.bd-tax-submit-btn:hover {
+    background: #2980b9;
+}
+
+.bd-tax-result {
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bd-tax-result-header h4 {
+    margin: 0 0 20px 0;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.bd-tax-result-body {
+    display: grid;
+    gap: 24px;
+}
+
+.bd-tax-summary-section h5,
+.bd-tax-slab-section h5,
+.bd-tax-final-section h5 {
+    margin: 0 0 12px 0;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.bd-tax-summary-table,
+.bd-tax-slab-table,
+.bd-tax-final-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+}
+
+.bd-tax-summary-table th,
+.bd-tax-summary-table td,
+.bd-tax-slab-table th,
+.bd-tax-slab-table td,
+.bd-tax-final-table th,
+.bd-tax-final-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.bd-tax-summary-table th,
+.bd-tax-slab-table th,
+.bd-tax-final-table th {
+    font-weight: 600;
+}
+
+.bd-tax-slab-table thead th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+.bd-tax-final-table .final-tax-row {
+    border-top: 2px solid #3498db;
+    font-weight: 600;
+}
+
+.bd-tax-final-table .payable-tax-row {
+    background-color: #e3f2fd;
+    border-top: 2px solid #2196f3;
+    font-weight: 700;
+    color: #1976d2;
+}
+
+.bd-tax-disclaimer {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .bd-tax-calculator-wrapper {
+        margin: 0 16px;
+    }
+
+    .bd-tax-form,
+    .bd-tax-result {
+        padding: 16px;
+    }
+
+    .bd-tax-checkboxes {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .bd-tax-summary-table,
+    .bd-tax-slab-table,
+    .bd-tax-final-table {
+        font-size: 14px;
+    }
+
+    .bd-tax-summary-table th,
+    .bd-tax-summary-table td,
+    .bd-tax-slab-table th,
+    .bd-tax-slab-table td,
+    .bd-tax-final-table th,
+    .bd-tax-final-table td {
+        padding: 8px;
+    }
+}
+
+/* DEFAULT THEME */
+.tax-calc-default .bd-tax-form {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.tax-calc-default .bd-tax-form-header h3 {
+    color: #2c3e50;
+}
+
+.tax-calc-default .bd-tax-field label {
+    color: #495057;
+}
+
+.tax-calc-default .bd-tax-result {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+}
+
+.tax-calc-default .bd-tax-result-header h4 {
+    color: #2c3e50;
+}
+
+.tax-calc-default .bd-tax-disclaimer {
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+}
+
+/* DARK THEME */
+.tax-calc-dark .bd-tax-form {
+    background: #2c3e50;
+    border: 1px solid #34495e;
+    color: #ecf0f1;
+}
+
+.tax-calc-dark .bd-tax-form-header h3 {
+    color: #ecf0f1;
+}
+
+.tax-calc-dark .bd-tax-field label {
+    color: #bdc3c7;
+}
+
+.tax-calc-dark .bd-tax-field input,
+.tax-calc-dark .bd-tax-field select {
+    background: #34495e;
+    border-color: #4a5f7a;
+    color: #ecf0f1;
+}
+
+.tax-calc-dark .bd-tax-field input:focus,
+.tax-calc-dark .bd-tax-field select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.tax-calc-dark .bd-tax-submit-btn {
+    background: #e74c3c;
+}
+
+.tax-calc-dark .bd-tax-submit-btn:hover {
+    background: #c0392b;
+}
+
+.tax-calc-dark .bd-tax-result {
+    background: #34495e;
+    border: 1px solid #4a5f7a;
+    color: #ecf0f1;
+}
+
+.tax-calc-dark .bd-tax-result-header h4 {
+    color: #ecf0f1;
+}
+
+.tax-calc-dark .bd-tax-summary-table th,
+.tax-calc-dark .bd-tax-slab-table th,
+.tax-calc-dark .bd-tax-final-table th {
+    color: #bdc3c7;
+}
+
+.tax-calc-dark .bd-tax-summary-table th,
+.tax-calc-dark .bd-tax-summary-table td,
+.tax-calc-dark .bd-tax-slab-table th,
+.tax-calc-dark .bd-tax-slab-table td,
+.tax-calc-dark .bd-tax-final-table th,
+.tax-calc-dark .bd-tax-final-table td {
+    border-bottom-color: #4a5f7a;
+}
+
+.tax-calc-dark .bd-tax-slab-table thead th {
+    background: #2c3e50;
+}
+
+.tax-calc-dark .bd-tax-final-table .final-tax-row {
+    border-top-color: #e74c3c;
+}
+
+.tax-calc-dark .bd-tax-final-table .payable-tax-row {
+    background-color: #1a252f;
+    border-top-color: #3498db;
+    color: #5dade2;
+}
+
+.tax-calc-dark .bd-tax-disclaimer {
+    background: #1a252f;
+    color: #3498db;
+    border: 1px solid #2c3e50;
+}
+
+/* LIGHT THEME */
+.tax-calc-light .bd-tax-form {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.tax-calc-light .bd-tax-form-header h3 {
+    color: #495057;
+}
+
+.tax-calc-light .bd-tax-field label {
+    color: #6c757d;
+}
+
+.tax-calc-light .bd-tax-field input,
+.tax-calc-light .bd-tax-field select {
+    border-color: #ced4da;
+    background: #ffffff;
+}
+
+.tax-calc-light .bd-tax-field input:focus,
+.tax-calc-light .bd-tax-field select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.tax-calc-light .bd-tax-submit-btn {
+    background: #28a745;
+}
+
+.tax-calc-light .bd-tax-submit-btn:hover {
+    background: #218838;
+}
+
+.tax-calc-light .bd-tax-result {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.tax-calc-light .bd-tax-result-header h4 {
+    color: #495057;
+}
+
+.tax-calc-light .bd-tax-summary-table th,
+.tax-calc-light .bd-tax-slab-table th,
+.tax-calc-light .bd-tax-final-table th {
+    color: #495057;
+}
+
+.tax-calc-light .bd-tax-slab-table thead th {
+    background: #f8f9fa;
+}
+
+.tax-calc-light .bd-tax-final-table .final-tax-row {
+    border-top-color: #28a745;
+}
+
+.tax-calc-light .bd-tax-final-table .payable-tax-row {
+    background-color: #e8f5e8;
+    border-top-color: #28a745;
+    color: #155724;
+}
+
+.tax-calc-light .bd-tax-disclaimer {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #e9ecef;
+}

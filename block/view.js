@@ -17,15 +17,30 @@ function formatTaka(amount) {
     return '৳' + amount.toLocaleString('en-BD');
 }
 
-function calculateTaxSlabs(taxable) {
-    const slabs = [
-        { upto: 375000, rate: 0 },
-        { upto: 675000, rate: 0.1 },
-        { upto: 1075000, rate: 0.15 },
-        { upto: 1575000, rate: 0.2 },
-        { upto: 3575000, rate: 0.25 },
-    ];
-    const slabLimits = [375000, 300000, 400000, 500000, 2000000];
+function calculateTaxableIncome(grossIncome) {
+    // Calculate deduction: Gross Income/3 or 450,000 whichever is lower
+    const deduction = Math.min(grossIncome / 3, 450000);
+    const taxableIncome = grossIncome - deduction;
+
+    return {
+        deduction: Math.round(deduction),
+        taxableIncome: Math.max(Math.round(taxableIncome), 0)
+    };
+}
+
+function calculateTaxSlabs(taxable, taxYear) {
+    let slabLimits, slabRates;
+
+    if (taxYear === '2024-25') {
+        // FY 2024-2025 and before tax slabs
+        slabLimits = [350000, 100000, 400000, 500000, 500000, 2000000];
+        slabRates = [0, 0.05, 0.10, 0.15, 0.20, 0.25];
+    } else {
+        // FY 2025-2026 and after tax slabs
+        slabLimits = [375000, 300000, 400000, 500000, 2000000];
+        slabRates = [0, 0.10, 0.15, 0.20, 0.25];
+    }
+
     let remaining = taxable;
     let lower = 0;
     let tax = 0;
@@ -34,16 +49,12 @@ function calculateTaxSlabs(taxable) {
     for (let i = 0; i < slabLimits.length && remaining > 0; ++i) {
         const thisSlabLimit = slabLimits[i];
         const taxableHere = Math.min(remaining, thisSlabLimit);
-        const slabRate =
-            i === 0 ? 0
-                : i === 1 ? 0.1
-                    : i === 2 ? 0.15
-                        : i === 3 ? 0.2
-                            : 0.25;
+        const slabRate = slabRates[i];
         const slabStart = lower + 1;
         const slabEnd = lower + thisSlabLimit;
         const amountInThisSlab = taxableHere > 0 ? taxableHere : 0;
         const thisTax = slabRate * amountInThisSlab;
+
         breakdown.push({
             start: slabStart,
             end: slabEnd,
@@ -51,11 +62,13 @@ function calculateTaxSlabs(taxable) {
             amount: amountInThisSlab,
             tax: thisTax,
         });
+
         tax += thisTax;
         lower += thisSlabLimit;
         remaining -= amountInThisSlab;
     }
 
+    // Handle remaining amount above highest slab (30% rate)
     if (remaining > 0) {
         const thisTax = 0.3 * remaining;
         breakdown.push({
@@ -90,18 +103,38 @@ function calculateInvestmentRebate(taxable, investment, totalTax) {
 // Form validation and error display functions
 function showError(fieldName, message, form) {
     const field = form.querySelector(`[name="${fieldName}"]`);
-    const errorDiv = field.parentNode.querySelector('.bd-tax-error');
-    if (errorDiv) {
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
+    if (field && field.parentNode) {
+        const errorDiv = field.parentNode.querySelector('.bd-tax-error');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        field.classList.add('error');
+    } else {
+        // Fallback: log error if field structure is not as expected
+        console.warn(`Could not show error for field: ${fieldName}. Field or parent node not found.`);
     }
 }
 
 function clearErrors(form) {
+    if (!form) {
+        console.warn('clearErrors: form is null or undefined');
+        return;
+    }
+
     const errorDivs = form.querySelectorAll('.bd-tax-error');
     errorDivs.forEach(div => {
-        div.style.display = 'none';
-        div.textContent = '';
+        if (div) {
+            div.style.display = 'none';
+            div.textContent = '';
+        }
+    });
+
+    const errorFields = form.querySelectorAll('.error');
+    errorFields.forEach(field => {
+        if (field) {
+            field.classList.remove('error');
+        }
     });
 }
 
@@ -112,6 +145,10 @@ function validateForm(formData) {
         errors.fullName = 'Full Name is required';
     }
 
+    if (!formData.taxYear) {
+        errors.taxYear = 'Tax Year is required';
+    }
+
     if (!formData.gender) {
         errors.gender = 'Gender required';
     }
@@ -120,12 +157,17 @@ function validateForm(formData) {
         errors.age = 'Enter valid age';
     }
 
-    if (!formData.totalIncome || isNaN(formData.totalIncome) || parseFloat(formData.totalIncome) < 0) {
-        errors.totalIncome = 'Income required';
+    if (!formData.grossIncome || isNaN(formData.grossIncome) || parseFloat(formData.grossIncome) < 0) {
+        errors.grossIncome = 'Gross Income required';
     }
 
     if (formData.totalInvestment === '' || isNaN(formData.totalInvestment) || parseFloat(formData.totalInvestment) < 0) {
         errors.totalInvestment = 'Investment required';
+    }
+
+    // Paid tax is optional, but if provided, must be valid
+    if (formData.paidTax !== '' && (isNaN(formData.paidTax) || parseFloat(formData.paidTax) < 0)) {
+        errors.paidTax = 'Invalid paid tax amount';
     }
 
     return errors;
@@ -133,37 +175,52 @@ function validateForm(formData) {
 
 // Display results in the result container
 function displayResults(result, formData, resultContainer) {
+    // Helper function to safely update element text content
+    function safeUpdateText(selector, value) {
+        const element = resultContainer.querySelector(selector);
+        if (element) {
+            element.textContent = value;
+        } else {
+            console.warn(`Element not found: ${selector}`);
+        }
+    }
+
     // Update basic info
-    resultContainer.querySelector('.total-income-display').textContent = formatTaka(parseFloat(formData.totalIncome));
-    resultContainer.querySelector('.exemption-display').textContent = formatTaka(result.exemption);
-    resultContainer.querySelector('.taxable-income-display').textContent = formatTaka(result.taxableIncome);
+    safeUpdateText('.gross-income-display', formatTaka(parseFloat(formData.grossIncome)));
+    safeUpdateText('.deduction-display', formatTaka(result.deduction));
+    safeUpdateText('.taxable-income-display', formatTaka(result.taxableIncome));
 
     // Update slab breakdown
     const slabTableBody = resultContainer.querySelector('.slab-breakdown');
-    slabTableBody.innerHTML = '';
+    if (slabTableBody) {
+        slabTableBody.innerHTML = '';
 
-    result.breakdown.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${formatTaka(row.start)} – ${formatTaka(row.end)}</td>
-            <td>${Math.round(row.rate * 100)}</td>
-            <td>${formatTaka(row.amount)}</td>
-            <td>${formatTaka(Math.round(row.tax))}</td>
-        `;
-        slabTableBody.appendChild(tr);
-    });
+        result.breakdown.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${formatTaka(row.start)} – ${formatTaka(row.end)}</td>
+                <td>${Math.round(row.rate * 100)}</td>
+                <td>${formatTaka(row.amount)}</td>
+                <td>${formatTaka(Math.round(row.tax))}</td>
+            `;
+            slabTableBody.appendChild(tr);
+        });
+    }
 
     // Update summary
-    resultContainer.querySelector('.total-tax-display').textContent = formatTaka(result.totalTax);
-    resultContainer.querySelector('.allowable-investment-display').textContent = formatTaka(result.rebateData.allowableInvestment);
-    resultContainer.querySelector('.rebate-a-display').textContent = formatTaka(result.rebateData.rebateA);
-    resultContainer.querySelector('.rebate-b-display').textContent = formatTaka(result.rebateData.rebateB);
-    resultContainer.querySelector('.rebate-cap-display').textContent = formatTaka(result.rebateData.cap);
-    resultContainer.querySelector('.applied-rebate-display').textContent = formatTaka(result.rebateData.rebate);
-    resultContainer.querySelector('.final-tax-display').textContent = formatTaka(result.finalTax);
+    safeUpdateText('.total-tax-display', formatTaka(result.totalTax));
+    safeUpdateText('.allowable-investment-display', formatTaka(result.rebateData.allowableInvestment));
+    safeUpdateText('.rebate-a-display', formatTaka(result.rebateData.rebateA));
+    safeUpdateText('.rebate-b-display', formatTaka(result.rebateData.rebateB));
+    safeUpdateText('.rebate-cap-display', formatTaka(result.rebateData.cap));
+    safeUpdateText('.applied-rebate-display', formatTaka(result.rebateData.rebate));
+    safeUpdateText('.final-tax-display', formatTaka(result.finalTax));
+    safeUpdateText('.paid-tax-display', formatTaka(result.paidTax));
+    safeUpdateText('.payable-tax-display', formatTaka(result.payableTax));
 
-    // Show the result container
+    // Show the result container with animation
     resultContainer.style.display = 'block';
+    resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // Main form submission handler
@@ -180,13 +237,15 @@ function handleFormSubmit(event) {
     const formData = new FormData(form);
     const data = {
         fullName: formData.get('fullName') || '',
+        taxYear: formData.get('taxYear') || '',
         gender: formData.get('gender') || '',
         age: formData.get('age') || '',
         thirdGender: formData.has('thirdGender'),
         freedomFighter: formData.has('freedomFighter'),
         disabled: formData.has('disabled'),
-        totalIncome: formData.get('totalIncome') || '',
-        totalInvestment: formData.get('totalInvestment') || ''
+        grossIncome: formData.get('grossIncome') || '',
+        totalInvestment: formData.get('totalInvestment') || '',
+        paidTax: formData.get('paidTax') || '0'
     };
 
     // Validate form
@@ -206,31 +265,27 @@ function handleFormSubmit(event) {
     const values = {
         ...data,
         age: parseInt(data.age),
-        totalIncome: parseFloat(data.totalIncome),
-        totalInvestment: parseFloat(data.totalInvestment)
+        grossIncome: parseFloat(data.grossIncome),
+        totalInvestment: parseFloat(data.totalInvestment),
+        paidTax: parseFloat(data.paidTax) || 0
     };
 
-    // Calculate tax
-    const exemption = getExemptionLimit({
-        gender: values.gender,
-        age: values.age,
-        thirdGender: values.thirdGender,
-        disabled: values.disabled,
-        freedomFighter: values.freedomFighter
-    });
-
-    const taxableIncome = Math.max(values.totalIncome - exemption, 0);
-    const { breakdown, totalTax } = calculateTaxSlabs(taxableIncome);
-    const rebateData = calculateInvestmentRebate(taxableIncome, values.totalInvestment, totalTax);
+    // Calculate taxable income using new logic (no exemption limits)
+    const taxableIncomeData = calculateTaxableIncome(values.grossIncome);
+    const { breakdown, totalTax } = calculateTaxSlabs(taxableIncomeData.taxableIncome, values.taxYear);
+    const rebateData = calculateInvestmentRebate(taxableIncomeData.taxableIncome, values.totalInvestment, totalTax);
     const finalTax = Math.max(0, totalTax - rebateData.rebate);
+    const payableTax = finalTax - values.paidTax;
 
     const result = {
-        exemption,
-        taxableIncome,
+        deduction: taxableIncomeData.deduction,
+        taxableIncome: taxableIncomeData.taxableIncome,
         breakdown,
         totalTax,
         rebateData,
-        finalTax
+        finalTax,
+        paidTax: values.paidTax,
+        payableTax: payableTax
     };
 
     // Display results

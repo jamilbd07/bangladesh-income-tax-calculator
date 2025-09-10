@@ -1,186 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bangladesh Tax Calculator - Frontend Test</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .bd-tax-error {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 10px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        button {
-            background-color: #0073aa;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #005a87;
-        }
-        input, select {
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-    </style>
+    <title>Bangladesh Tax Calculator Test</title>
+    <link rel="stylesheet" href="assets/css/frontend.css">
 </head>
+
 <body>
-    <h1>Bangladesh Tax Calculator - Frontend Test</h1>
-    <p>This is a test page to demonstrate how the Bangladesh Tax Calculator block works on the frontend.</p>
-    
-    <!-- This is the HTML structure that would be output by save.js -->
-    <div class="wp-block-telex-block-bangladesh-tax-calculator">
-        <form class="bd-tax-form" style="max-width: 480px; margin-bottom: 22px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background: #f7fafd;">
-            <h3>Bangladesh Tax Calculator (2025-26)</h3>
-            <div style="margin-bottom: 10px;">
-                <label>
-                    Full Name<br />
-                    <input name="fullName" type="text" style="width: 100%;" />
-                    <div class="bd-tax-error" style="display: none; color: red; font-size: 0.9em;"></div>
-                </label>
+    <div style="padding: 20px;">
+        <h1>Bangladesh Tax Calculator Test</h1>
+
+        <!-- Test Default Theme -->
+        <div class="bd-tax-calculator-wrapper tax-calc-default" style="margin-bottom: 40px;">
+            <h2>Default Theme</h2>
+            <form class="bd-tax-form" method="post">
+                <div class="bd-tax-form-header">
+                    <h3>Bangladesh Tax Calculator</h3>
+                </div>
+
+                <div class="bd-tax-form-body">
+                    <div class="bd-tax-field">
+                        <label for="fullName">
+                            Full Name
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" name="fullName" id="fullName" required />
+                        <div class="bd-tax-error" style="display: none;"></div>
+                    </div>
+
+                    <div class="bd-tax-field">
+                        <label for="taxYear">
+                            Tax Year
+                            <span class="required">*</span>
+                        </label>
+                        <select name="taxYear" id="taxYear" required>
+                            <option value="">-- Select Tax Year --</option>
+                            <option value="2024-25">2024-25 or Before</option>
+                            <option value="2025-26">2025-26 or After</option>
+                        </select>
+                        <div class="bd-tax-error" style="display: none;"></div>
+                    </div>
+
+                    <div class="bd-tax-field">
+                        <label for="gender">
+                            Gender
+                            <span class="required">*</span>
+                        </label>
+                        <select name="gender" id="gender" required>
+                            <option value="">-- Select --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <div class="bd-tax-error" style="display: none;"></div>
+                    </div>
+
+                    <div class="bd-tax-field">
+                        <label for="age">
+                            Age
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" name="age" id="age" min="0" required />
+                        <div class="bd-tax-error" style="display: none;"></div>
+                    </div>
+
+                    <div class="bd-tax-checkboxes">
+                        <label class="bd-tax-checkbox">
+                            <input type="checkbox" name="thirdGender" />
+                            Is Third Gender
+                        </label>
+                        <label class="bd-tax-checkbox">
+                            <input type="checkbox" name="freedomFighter" />
+                            Is Freedom Fighter
+                        </label>
+                        <label class="bd-tax-checkbox">
+                            <input type="checkbox" name="disabled" />
+                            Is Disabled
+                        </label>
+                    </div>
+
+                    <div class="bd-tax-field">
+                        <label for="grossIncome">
+                            Gross Income (Yearly, Taka)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" name="grossIncome" id="grossIncome" min="0" step="0.01" required />
+                        <div class="bd-tax-error" style="display: none;"></div>
+                    </div>
+
+                    <div class="bd-tax-field">
+                        <label for="totalInvestment">
+                            Total Investment (Yearly, Taka)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" name="totalInvestment" id="totalInvestment" min="0" step="0.01" required />
+                        <div class="bd-tax-error" style="display: none;"></div>
+                    </div>
+
+                    <div class="bd-tax-field">
+                        <label for="paidTax">
+                            Paid Tax (Optional, Taka)
+                        </label>
+                        <input type="number" name="paidTax" id="paidTax" min="0" step="0.01" placeholder="0" />
+                        <div class="bd-tax-error" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="bd-tax-form-footer">
+                    <button type="submit" class="bd-tax-submit-btn">
+                        Calculate Tax
+                    </button>
+                </div>
+            </form>
+
+            <div class="bd-tax-result" style="display: none;">
+                <div class="bd-tax-result-header">
+                    <h4>Tax Calculation Result</h4>
+                </div>
+
+                <div class="bd-tax-result-body">
+                    <div class="bd-tax-summary-section">
+                        <table class="bd-tax-summary-table">
+                            <tbody>
+                                <tr>
+                                    <th>Gross Income</th>
+                                    <td class="gross-income-display">৳0</td>
+                                </tr>
+                                <tr>
+                                    <th>Deduction (Gross Income/3 or ৳4,50,000)</th>
+                                    <td class="deduction-display">৳0</td>
+                                </tr>
+                                <tr>
+                                    <th>Taxable Income (After Deduction)</th>
+                                    <td class="taxable-income-display">৳0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bd-tax-slab-section">
+                        <h5>Tax Calculation (Slab by Slab)</h5>
+                        <table class="bd-tax-slab-table">
+                            <thead>
+                                <tr>
+                                    <th>Slab Range (৳)</th>
+                                    <th>Rate (%)</th>
+                                    <th>Taxable Amount</th>
+                                    <th>Tax</th>
+                                </tr>
+                            </thead>
+                            <tbody class="slab-breakdown">
+                                <!-- Dynamic content will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bd-tax-final-section">
+                        <table class="bd-tax-final-table">
+                            <tbody>
+                                <tr>
+                                    <th>Total Tax (Before Rebate)</th>
+                                    <td class="total-tax-display">৳0</td>
+                                </tr>
+                                <tr>
+                                    <th>Allowable Investment Used</th>
+                                    <td class="allowable-investment-display">৳0</td>
+                                </tr>
+                                <tr>
+                                    <th>Rebate A (3% of taxable income)</th>
+                                    <td class="rebate-a-display">৳0</td>
+                                </tr>
+                                <tr>
+                                    <th>Rebate B (15% of applicable investment)</th>
+                                    <td class="rebate-b-display">৳0</td>
+                                </tr>
+                                <tr>
+                                    <th>Maximum Rebate Cap</th>
+                                    <td class="rebate-cap-display">৳0</td>
+                                </tr>
+                                <tr>
+                                    <th>Applied Rebate</th>
+                                    <td class="applied-rebate-display">৳0</td>
+                                </tr>
+                                <tr class="final-tax-row">
+                                    <th>Final Tax After Rebate</th>
+                                    <td class="final-tax-display">৳0</td>
+                                </tr>
+                                <tr>
+                                    <th>Paid Tax</th>
+                                    <td class="paid-tax-display">৳0</td>
+                                </tr>
+                                <tr class="payable-tax-row">
+                                    <th>Payable Tax</th>
+                                    <td class="payable-tax-display">৳0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bd-tax-disclaimer">
+                        <p>The calculation is for informational purposes only. Check with an official source for
+                            compliance.</p>
+                    </div>
+                </div>
             </div>
-            <div style="margin-bottom: 10px;">
-                <label>
-                    Gender<br />
-                    <select name="gender" style="width: 100%;">
-                        <option value="" disabled selected>-- Select --</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                    <div class="bd-tax-error" style="display: none; color: red; font-size: 0.9em;"></div>
-                </label>
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label>
-                    Age<br />
-                    <input name="age" type="number" style="width: 100%;" min="0" />
-                    <div class="bd-tax-error" style="display: none; color: red; font-size: 0.9em;"></div>
-                </label>
-            </div>
-            <div style="display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap;">
-                <label>
-                    <input name="thirdGender" type="checkbox" />
-                    Is Third Gender
-                </label>
-                <label>
-                    <input name="freedomFighter" type="checkbox" />
-                    Is Freedom Fighter
-                </label>
-                <label>
-                    <input name="disabled" type="checkbox" />
-                    Is Disabled
-                </label>
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label>
-                    Total Income (Yearly, Taka)<br />
-                    <input name="totalIncome" type="number" min="0" style="width: 100%;" />
-                    <div class="bd-tax-error" style="display: none; color: red; font-size: 0.9em;"></div>
-                </label>
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label>
-                    Total Investment (Yearly, Taka)<br />
-                    <input name="totalInvestment" type="number" min="0" style="width: 100%;" />
-                    <div class="bd-tax-error" style="display: none; color: red; font-size: 0.9em;"></div>
-                </label>
-            </div>
-            <div>
-                <button type="submit">Calculate Tax</button>
-            </div>
-        </form>
-        <div class="bd-tax-result" style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 12px; max-width: 620px; display: none;">
-            <h4>Tax Calculation Result</h4>
-            <table class="bd-tax-result-table">
-                <tbody>
-                    <tr>
-                        <th align="left">Total Income</th>
-                        <td class="total-income-display"></td>
-                    </tr>
-                    <tr>
-                        <th align="left">Exemption Limit</th>
-                        <td class="exemption-display"></td>
-                    </tr>
-                    <tr>
-                        <th align="left">Taxable Income</th>
-                        <td class="taxable-income-display"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <h5 style="margin-top: 18px;">Tax Calculation (Slab by Slab)</h5>
-            <table class="bd-tax-slab-table" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th>Slab Range (৳)</th>
-                        <th>Rate (%)</th>
-                        <th>Taxable Amount</th>
-                        <th>Tax</th>
-                    </tr>
-                </thead>
-                <tbody class="slab-breakdown">
-                </tbody>
-            </table>
-            <table class="bd-tax-summary" style="margin-top: 18px;">
-                <tbody>
-                    <tr>
-                        <th align="left">Total Tax (Before Rebate)</th>
-                        <td class="total-tax-display"></td>
-                    </tr>
-                    <tr>
-                        <th align="left">Allowable Investment Used</th>
-                        <td class="allowable-investment-display"></td>
-                    </tr>
-                    <tr>
-                        <th align="left">Rebate A (3% of taxable income)</th>
-                        <td class="rebate-a-display"></td>
-                    </tr>
-                    <tr>
-                        <th align="left">Rebate B (15% of applicable investment)</th>
-                        <td class="rebate-b-display"></td>
-                    </tr>
-                    <tr>
-                        <th align="left">Maximum Rebate Cap</th>
-                        <td class="rebate-cap-display"></td>
-                    </tr>
-                    <tr>
-                        <th align="left">Applied Rebate</th>
-                        <td class="applied-rebate-display"></td>
-                    </tr>
-                    <tr>
-                        <th align="left">Final Tax After Rebate</th>
-                        <td class="final-tax-display"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="margin-top: 16px; font-size: 0.93em; color: #666;">The calculation is for informational purposes only. Check with an official source for compliance.</div>
         </div>
     </div>
 
-    <!-- Load the frontend JavaScript -->
-    <script src="build/view.js"></script>
+    <script src="assets/js/frontend.js"></script>
 </body>
+
 </html>

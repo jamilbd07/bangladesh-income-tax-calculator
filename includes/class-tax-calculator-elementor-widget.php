@@ -1,0 +1,264 @@
+<?php
+    /**
+     * Tax Calculator Elementor Widget
+     *
+     * @package BangladeshTaxCalculator
+     */
+
+    if ( ! defined( 'ABSPATH' ) ) {
+        exit; // Exit if accessed directly.
+    }
+
+    /**
+     * Tax Calculator Elementor Widget Class
+     */
+    class Tax_Calculator_Elementor_Widget extends \Elementor\Widget_Base
+    {
+
+        /**
+         * Get widget name
+         *
+         * @return string Widget name
+         */
+        public function get_name()
+        {
+            return 'bangladesh-tax-calculator';
+        }
+
+        /**
+         * Get widget title
+         *
+         * @return string Widget title
+         */
+        public function get_title()
+        {
+            return esc_html__( 'Bangladesh Tax Calculator', 'bangladesh-tax-calculator' );
+        }
+
+        /**
+         * Get widget icon
+         *
+         * @return string Widget icon
+         */
+        public function get_icon()
+        {
+            return 'eicon-calculator';
+        }
+
+        /**
+         * Get widget categories
+         *
+         * @return array Widget categories
+         */
+        public function get_categories()
+        {
+            return [ 'general' ];
+        }
+
+        /**
+         * Get widget keywords
+         *
+         * @return array Widget keywords
+         */
+        public function get_keywords()
+        {
+            return [ 'tax', 'calculator', 'bangladesh', 'income', 'finance' ];
+        }
+
+        /**
+         * Register widget controls
+         */
+        protected function register_controls()
+        {
+            // Content Section
+            $this->start_controls_section(
+                'content_section',
+                [
+                    'label' => esc_html__( 'Content', 'bangladesh-tax-calculator' ),
+                    'tab'   => \Elementor\Controls_Manager::TAB_CONTENT
+                ]
+            );
+
+            $this->add_control(
+                'theme',
+                [
+                    'label'       => esc_html__( 'Theme', 'bangladesh-tax-calculator' ),
+                    'type'        => \Elementor\Controls_Manager::SELECT,
+                    'default'     => 'default',
+                    'options'     => [
+                        'default' => esc_html__( 'Default', 'bangladesh-tax-calculator' ),
+                        'dark'    => esc_html__( 'Dark', 'bangladesh-tax-calculator' ),
+                        'light'   => esc_html__( 'Light', 'bangladesh-tax-calculator' )
+                    ],
+                    'description' => esc_html__( 'Choose the visual theme for the tax calculator.', 'bangladesh-tax-calculator' )
+                ]
+            );
+
+            $this->end_controls_section();
+
+            // Style Section
+            $this->start_controls_section(
+                'style_section',
+                [
+                    'label' => esc_html__( 'Style', 'bangladesh-tax-calculator' ),
+                    'tab'   => \Elementor\Controls_Manager::TAB_STYLE
+                ]
+            );
+
+            $this->add_responsive_control(
+                'alignment',
+                [
+                    'label'     => esc_html__( 'Alignment', 'bangladesh-tax-calculator' ),
+                    'type'      => \Elementor\Controls_Manager::CHOOSE,
+                    'options'   => [
+                        'left'   => [
+                            'title' => esc_html__( 'Left', 'bangladesh-tax-calculator' ),
+                            'icon'  => 'eicon-text-align-left'
+                        ],
+                        'center' => [
+                            'title' => esc_html__( 'Center', 'bangladesh-tax-calculator' ),
+                            'icon'  => 'eicon-text-align-center'
+                        ],
+                        'right'  => [
+                            'title' => esc_html__( 'Right', 'bangladesh-tax-calculator' ),
+                            'icon'  => 'eicon-text-align-right'
+                        ]
+                    ],
+                    'default'   => 'center',
+                    'selectors' => [
+                        '{{WRAPPER}} .bd-tax-calculator-wrapper' => 'text-align: {{VALUE}};'
+                    ]
+                ]
+            );
+
+            $this->add_responsive_control(
+                'max_width',
+                [
+                    'label'      => esc_html__( 'Max Width', 'bangladesh-tax-calculator' ),
+                    'type'       => \Elementor\Controls_Manager::SLIDER,
+                    'size_units' => [ 'px', '%', 'em', 'rem' ],
+                    'range'      => [
+                        'px' => [
+                            'min' => 300,
+                            'max' => 1200
+                        ],
+                        '%'  => [
+                            'min' => 50,
+                            'max' => 100
+                        ]
+                    ],
+                    'default'    => [
+                        'unit' => 'px',
+                        'size' => 800
+                    ],
+                    'selectors'  => [
+                        '{{WRAPPER}} .bd-tax-calculator-wrapper' => 'max-width: {{SIZE}}{{UNIT}};'
+                    ]
+                ]
+            );
+
+            $this->add_responsive_control(
+                'margin',
+                [
+                    'label'      => esc_html__( 'Margin', 'bangladesh-tax-calculator' ),
+                    'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+                    'size_units' => [ 'px', '%', 'em' ],
+                    'selectors'  => [
+                        '{{WRAPPER}} .bd-tax-calculator-wrapper' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
+                    ]
+                ]
+            );
+
+            $this->add_responsive_control(
+                'padding',
+                [
+                    'label'      => esc_html__( 'Padding', 'bangladesh-tax-calculator' ),
+                    'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+                    'size_units' => [ 'px', '%', 'em' ],
+                    'selectors'  => [
+                        '{{WRAPPER}} .bd-tax-calculator-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
+                    ]
+                ]
+            );
+
+            $this->end_controls_section();
+        }
+
+        /**
+         * Render widget output on the frontend
+         */
+        protected function render()
+        {
+            $settings = $this->get_settings_for_display();
+            $theme    = isset( $settings[ 'theme' ] ) ? sanitize_text_field( $settings[ 'theme' ] ) : 'default';
+
+            // Validate theme
+            $allowed_themes = [ 'default', 'dark', 'light' ];
+            if ( ! in_array( $theme, $allowed_themes ) ) {
+                $theme = 'default';
+            }
+
+            // Render the shortcode
+            echo do_shortcode( '[tax_calculator theme="' . esc_attr( $theme ) . '"]' );
+        }
+
+        /**
+         * Render widget output in the editor
+         */
+        protected function content_template()
+        {
+        ?>
+        <#
+        var theme = settings.theme || 'default';
+        var themeClass = 'tax-calc-' + theme;
+        var themeStyles = {
+            'default': {
+                background: '#f8f9fa',
+                color: '#2c3e50',
+                border: '1px solid #dee2e6'
+            },
+            'dark': {
+                background: '#2c3e50',
+                color: '#ecf0f1',
+                border: '1px solid #34495e'
+            },
+            'light': {
+                background: '#ffffff',
+                color: '#495057',
+                border: '1px solid #e9ecef'
+            }
+        };
+        var currentTheme = themeStyles[theme] || themeStyles['default'];
+        #>
+        <div class="bd-tax-calculator-wrapper {{ themeClass }}">
+            <div class="bd-tax-form" style="padding: 20px; border-radius: 8px; background: {{ currentTheme.background }}; color: {{ currentTheme.color }}; border: {{ currentTheme.border }};">
+                <div class="bd-tax-form-header">
+                    <h3><?php esc_html_e( 'Bangladesh Tax Calculator', 'bangladesh-tax-calculator' ); ?></h3>
+                </div>
+                <div class="bd-tax-form-body">
+                    <p style="text-align: center; padding: 20px; background: rgba(0,0,0,0.05); border-radius: 6px; margin: 0;">
+                        <?php esc_html_e( 'Tax Calculator Preview - Frontend functionality will be available on the published page.', 'bangladesh-tax-calculator' ); ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <?php
+            }
+
+                /**
+                 * Render plain content (for export)
+                 */
+                public function render_plain_content()
+                {
+                    $settings = $this->get_settings_for_display();
+                    $theme    = isset( $settings[ 'theme' ] ) ? sanitize_text_field( $settings[ 'theme' ] ) : 'default';
+
+                    // Validate theme
+                    $allowed_themes = [ 'default', 'dark', 'light' ];
+                    if ( ! in_array( $theme, $allowed_themes ) ) {
+                        $theme = 'default';
+                    }
+
+                    echo '[tax_calculator theme="' . esc_attr( $theme ) . '"]';
+                }
+        }
