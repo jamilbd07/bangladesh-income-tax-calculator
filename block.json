@@ -1,0 +1,21 @@
+
+  {
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "telex/block-bangladesh-tax-calculator",
+	"version": "0.1.0",
+	"title": "Bangladesh Tax Calculator",
+	"category": "widgets",
+	"icon": "calculator",
+	"description": "User-friendly tax calculator for FY 2025-2026 in Bangladesh, supporting all standard slabs, exemption limits, and rebates per NBR rules.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "bangladesh-tax-calculator-block-wp",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+  }
+  
