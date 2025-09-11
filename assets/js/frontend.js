@@ -23,16 +23,56 @@
         };
     }
 
-    function calculateTaxSlabs(taxable, taxYear) {
+    function calculateZeroTaxSlabLimit({ gender, above65, disabled, freedomFighter, taxYear }) {
+        // Base 0% tax slab limits
+        let baseLimit = 0,
+            femaleLimit = 0,
+            seniorCitizenLimit = 0,
+            thirdGenderLimit = 0,
+            disabledLimit = 0,
+            freedomFighterLimit = 0;
+
+        if (taxYear === '2024-25') {
+            baseLimit = 350000; // Base for 2024-25
+        } else {
+            baseLimit = 375000; // Base for 2025-26
+        }
+
+        // Apply bonuses based on conditions
+        if (gender === 'female') {
+            femaleLimit = baseLimit + 50000;
+        }
+        if (above65) {
+            seniorCitizenLimit = baseLimit + 50000;
+        }
+        if (gender === 'third_gender') {
+            thirdGenderLimit = baseLimit + 125000;
+        }
+        if (disabled) {
+            disabledLimit = baseLimit + 125000;
+        }
+        if (freedomFighter) {
+            freedomFighterLimit = baseLimit + 150000;
+        }
+
+        let finalBaseLimit = Math.max(baseLimit, femaleLimit, seniorCitizenLimit, thirdGenderLimit, disabledLimit, freedomFighterLimit);
+
+        return finalBaseLimit;
+    }
+
+    function calculateTaxSlabs(taxable, taxYear, personalInfo) {
         let slabLimits, slabRates;
+
+        // Calculate variable 0% tax slab limit
+        const zeroTaxLimit = calculateZeroTaxSlabLimit(personalInfo);
 
         if (taxYear === '2024-25') {
             // FY 2024-2025 and before tax slabs
-            slabLimits = [350000, 100000, 400000, 500000, 500000, 2000000];
+            slabLimits = [zeroTaxLimit, 100000, 400000, 500000, 500000, 2000000];
             slabRates = [0, 0.05, 0.10, 0.15, 0.20, 0.25];
         } else {
             // FY 2025-2026 and after tax slabs
-            slabLimits = [375000, 300000, 400000, 500000, 2000000];
+            slabLimits = [zeroTaxLimit, 300000, 400000, 500000, 2000000];
             slabRates = [0, 0.10, 0.15, 0.20, 0.25];
         }
 
@@ -136,20 +176,12 @@
     function validateForm(formData) {
         const errors = {};
 
-        if (!formData.fullName.trim()) {
-            errors.fullName = 'Full Name is required';
-        }
-
         if (!formData.taxYear) {
             errors.taxYear = 'Tax Year is required';
         }
 
         if (!formData.gender) {
             errors.gender = 'Gender required';
-        }
-
-        if (formData.age === '' || isNaN(formData.age) || parseInt(formData.age) < 0) {
-            errors.age = 'Enter valid age';
         }
 
         if (!formData.grossIncome || isNaN(formData.grossIncome) || parseFloat(formData.grossIncome) < 0) {
@@ -244,11 +276,9 @@
         // Get form data
         const formData = new FormData(form);
         const data = {
-            fullName: formData.get('fullName') || '',
             taxYear: formData.get('taxYear') || '',
             gender: formData.get('gender') || '',
-            age: formData.get('age') || '',
-            thirdGender: formData.has('thirdGender'),
+            above65: formData.has('above65'),
             freedomFighter: formData.has('freedomFighter'),
             disabled: formData.has('disabled'),
             grossIncome: formData.get('grossIncome') || '',
@@ -272,7 +302,6 @@
         // Convert numeric values
         const values = {
             ...data,
-            age: parseInt(data.age),
             grossIncome: parseFloat(data.grossIncome),
             totalInvestment: parseFloat(data.totalInvestment),
             paidTax: parseFloat(data.paidTax) || 0
@@ -280,7 +309,17 @@
 
         // Calculate taxable income using new logic (no exemption limits)
         const taxableIncomeData = calculateTaxableIncome(values.grossIncome);
-        const { breakdown, totalTax } = calculateTaxSlabs(taxableIncomeData.taxableIncome, values.taxYear);
+
+        // Prepare personal info for tax slab calculation
+        const personalInfo = {
+            gender: values.gender,
+            above65: values.above65,
+            disabled: values.disabled,
+            freedomFighter: values.freedomFighter,
+            taxYear: values.taxYear
+        };
+
+        const { breakdown, totalTax } = calculateTaxSlabs(taxableIncomeData.taxableIncome, values.taxYear, personalInfo);
         const rebateData = calculateInvestmentRebate(taxableIncomeData.taxableIncome, values.totalInvestment, totalTax);
         const finalTax = Math.max(0, totalTax - rebateData.rebate);
         const payableTax = finalTax - values.paidTax;

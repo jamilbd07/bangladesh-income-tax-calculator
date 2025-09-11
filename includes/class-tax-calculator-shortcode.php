@@ -75,15 +75,6 @@
 
             <div class="bd-tax-form-body">
                 <div class="bd-tax-field">
-                    <label for="fullName">
-                        <?php esc_html_e( 'Full Name', 'bangladesh-tax-calculator' ); ?>
-                        <span class="required">*</span>
-                    </label>
-                    <input type="text" name="fullName" id="fullName" required />
-                    <div class="bd-tax-error" style="display: none;"></div>
-                </div>
-
-                <div class="bd-tax-field">
                     <label for="taxYear">
                         <?php esc_html_e( 'Tax Year', 'bangladesh-tax-calculator' ); ?>
                         <span class="required">*</span>
@@ -105,23 +96,15 @@
                         <option value=""><?php esc_html_e( '-- Select --', 'bangladesh-tax-calculator' ); ?></option>
                         <option value="male"><?php esc_html_e( 'Male', 'bangladesh-tax-calculator' ); ?></option>
                         <option value="female"><?php esc_html_e( 'Female', 'bangladesh-tax-calculator' ); ?></option>
+                        <option value="third_gender"><?php esc_html_e( 'Third Gender', 'bangladesh-tax-calculator' ); ?></option>
                     </select>
-                    <div class="bd-tax-error" style="display: none;"></div>
-                </div>
-
-                <div class="bd-tax-field">
-                    <label for="age">
-                        <?php esc_html_e( 'Age', 'bangladesh-tax-calculator' ); ?>
-                        <span class="required">*</span>
-                    </label>
-                    <input type="number" name="age" id="age" min="0" required />
                     <div class="bd-tax-error" style="display: none;"></div>
                 </div>
 
                 <div class="bd-tax-checkboxes">
                     <label class="bd-tax-checkbox">
-                        <input type="checkbox" name="thirdGender" />
-                        <?php esc_html_e( 'Is Third Gender', 'bangladesh-tax-calculator' ); ?>
+                        <input type="checkbox" name="above65" />
+                        <?php esc_html_e( 'Above 65 Age', 'bangladesh-tax-calculator' ); ?>
                     </label>
                     <label class="bd-tax-checkbox">
                         <input type="checkbox" name="freedomFighter" />

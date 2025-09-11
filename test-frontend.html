@@ -22,15 +22,6 @@
 
                 <div class="bd-tax-form-body">
                     <div class="bd-tax-field">
-                        <label for="fullName">
-                            Full Name
-                            <span class="required">*</span>
-                        </label>
-                        <input type="text" name="fullName" id="fullName" required />
-                        <div class="bd-tax-error" style="display: none;"></div>
-                    </div>
-
-                    <div class="bd-tax-field">
                         <label for="taxYear">
                             Tax Year
                             <span class="required">*</span>
@@ -52,23 +43,15 @@
                             <option value="">-- Select --</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
+                            <option value="third_gender">Third Gender</option>
                         </select>
-                        <div class="bd-tax-error" style="display: none;"></div>
-                    </div>
-
-                    <div class="bd-tax-field">
-                        <label for="age">
-                            Age
-                            <span class="required">*</span>
-                        </label>
-                        <input type="number" name="age" id="age" min="0" required />
                         <div class="bd-tax-error" style="display: none;"></div>
                     </div>
 
                     <div class="bd-tax-checkboxes">
                         <label class="bd-tax-checkbox">
-                            <input type="checkbox" name="thirdGender" />
-                            Is Third Gender
+                            <input type="checkbox" name="above65" />
+                            Above 65 Age
                         </label>
                         <label class="bd-tax-checkbox">
                             <input type="checkbox" name="freedomFighter" />
