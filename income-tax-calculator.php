@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name:       Bangladesh Income Tax Calculator – Personal Tax Calculation with Elementor Widget & Block Editor
+ * Plugin Name:       Bangladesh Income Tax Calculator
  * Description:       A comprehensive tax calculator for Bangladesh with shortcode, block editor, and Elementor widget support. Features multiple themes and responsive design.
  * Version:           1.0.0
  * Author:            MD Jamil Uddin
  * License:           GPLv3
  * License URI:       https://opensource.org/licenses/GPL-3.0
- * Text Domain:       tax-calculator
+ * Text Domain:       income-tax-calculator
  *
  * @package TaxCalculatorBangladesh
  */
