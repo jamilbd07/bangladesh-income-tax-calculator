@@ -32,7 +32,7 @@
          */
         public function get_title()
         {
-            return esc_html__( 'Bangladesh Tax Calculator', 'bangladesh-tax-calculator' );
+            return esc_html__( 'Tax Calculator Bangladesh', 'bangladesh-tax-calculator' );
         }
 
         /**
@@ -76,7 +76,18 @@
                 [
                     'label' => esc_html__( 'Content', 'bangladesh-tax-calculator' ),
                     'tab'   => \Elementor\Controls_Manager::TAB_CONTENT
-                ]
+                 ]
+            );
+
+            $this->add_control(
+                'title',
+                [
+                    'label'       => esc_html__( 'Title', 'bangladesh-tax-calculator' ),
+                    'type'        => \Elementor\Controls_Manager::TEXT,
+                    'default'     => 'Tax Calculator',
+                    'placeholder' => esc_html__( 'Enter title...', 'bangladesh-tax-calculator' ),
+                    'description' => esc_html__( 'Leave empty if you don\'t want to show the title.', 'bangladesh-tax-calculator' )
+                 ]
             );
 
             $this->add_control(
@@ -89,9 +100,9 @@
                         'default' => esc_html__( 'Default', 'bangladesh-tax-calculator' ),
                         'dark'    => esc_html__( 'Dark', 'bangladesh-tax-calculator' ),
                         'light'   => esc_html__( 'Light', 'bangladesh-tax-calculator' )
-                    ],
+                     ],
                     'description' => esc_html__( 'Choose the visual theme for the tax calculator.', 'bangladesh-tax-calculator' )
-                ]
+                 ]
             );
 
             $this->end_controls_section();
@@ -102,7 +113,7 @@
                 [
                     'label' => esc_html__( 'Style', 'bangladesh-tax-calculator' ),
                     'tab'   => \Elementor\Controls_Manager::TAB_STYLE
-                ]
+                 ]
             );
 
             $this->add_responsive_control(
@@ -114,21 +125,21 @@
                         'left'   => [
                             'title' => esc_html__( 'Left', 'bangladesh-tax-calculator' ),
                             'icon'  => 'eicon-text-align-left'
-                        ],
+                         ],
                         'center' => [
                             'title' => esc_html__( 'Center', 'bangladesh-tax-calculator' ),
                             'icon'  => 'eicon-text-align-center'
-                        ],
+                         ],
                         'right'  => [
                             'title' => esc_html__( 'Right', 'bangladesh-tax-calculator' ),
                             'icon'  => 'eicon-text-align-right'
-                        ]
-                    ],
+                         ]
+                     ],
                     'default'   => 'center',
                     'selectors' => [
                         '{{WRAPPER}} .bd-tax-calculator-wrapper' => 'text-align: {{VALUE}};'
-                    ]
-                ]
+                     ]
+                 ]
             );
 
             $this->add_responsive_control(
@@ -141,20 +152,20 @@
                         'px' => [
                             'min' => 300,
                             'max' => 1200
-                        ],
+                         ],
                         '%'  => [
                             'min' => 50,
                             'max' => 100
-                        ]
-                    ],
+                         ]
+                     ],
                     'default'    => [
                         'unit' => 'px',
                         'size' => 800
-                    ],
+                     ],
                     'selectors'  => [
                         '{{WRAPPER}} .bd-tax-calculator-wrapper' => 'max-width: {{SIZE}}{{UNIT}};'
-                    ]
-                ]
+                     ]
+                 ]
             );
 
             $this->add_responsive_control(
@@ -165,8 +176,8 @@
                     'size_units' => [ 'px', '%', 'em' ],
                     'selectors'  => [
                         '{{WRAPPER}} .bd-tax-calculator-wrapper' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
-                    ]
-                ]
+                     ]
+                 ]
             );
 
             $this->add_responsive_control(
@@ -177,8 +188,8 @@
                     'size_units' => [ 'px', '%', 'em' ],
                     'selectors'  => [
                         '{{WRAPPER}} .bd-tax-calculator-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
-                    ]
-                ]
+                     ]
+                 ]
             );
 
             $this->end_controls_section();
@@ -191,6 +202,7 @@
         {
             $settings = $this->get_settings_for_display();
             $theme    = isset( $settings[ 'theme' ] ) ? sanitize_text_field( $settings[ 'theme' ] ) : 'default';
+            $title    = isset( $settings[ 'title' ] ) ? sanitize_text_field( $settings[ 'title' ] ) : '';
 
             // Validate theme
             $allowed_themes = [ 'default', 'dark', 'light' ];
@@ -198,8 +210,15 @@
                 $theme = 'default';
             }
 
+            // Build shortcode attributes
+            $shortcode_atts = 'theme="' . esc_attr( $theme ) . '"';
+            // Only add title attribute if it's not empty (including whitespace-only strings)
+            if ( ! empty( trim( $title ) ) ) {
+                $shortcode_atts .= ' title="' . esc_attr( $title ) . '"';
+            }
+
             // Render the shortcode
-            echo do_shortcode( '[tax_calculator theme="' . esc_attr( $theme ) . '"]' );
+            echo do_shortcode( '[tax_calculator ' . $shortcode_atts . ']' );
         }
 
         /**
@@ -233,7 +252,7 @@
         <div class="bd-tax-calculator-wrapper {{ themeClass }}">
             <div class="bd-tax-form" style="padding: 20px; border-radius: 8px; background: {{ currentTheme.background }}; color: {{ currentTheme.color }}; border: {{ currentTheme.border }};">
                 <div class="bd-tax-form-header">
-                    <h3><?php esc_html_e( 'Bangladesh Tax Calculator', 'bangladesh-tax-calculator' ); ?></h3>
+                    <h3>{{ settings.title || 'Tax Calculator (Preview)' }}</h3>
                 </div>
                 <div class="bd-tax-form-body">
                     <p style="text-align: center; padding: 20px; background: rgba(0,0,0,0.05); border-radius: 6px; margin: 0;">
@@ -252,6 +271,7 @@
                 {
                     $settings = $this->get_settings_for_display();
                     $theme    = isset( $settings[ 'theme' ] ) ? sanitize_text_field( $settings[ 'theme' ] ) : 'default';
+                    $title    = isset( $settings[ 'title' ] ) ? sanitize_text_field( $settings[ 'title' ] ) : '';
 
                     // Validate theme
                     $allowed_themes = [ 'default', 'dark', 'light' ];
@@ -259,6 +279,13 @@
                         $theme = 'default';
                     }
 
-                    echo '[tax_calculator theme="' . esc_attr( $theme ) . '"]';
+                    // Build shortcode attributes
+                    $shortcode_atts = 'theme="' . esc_attr( $theme ) . '"';
+                    // Only add title attribute if it's not empty (including whitespace-only strings)
+                    if ( ! empty( trim( $title ) ) ) {
+                        $shortcode_atts .= ' title="' . esc_attr( $title ) . '"';
+                    }
+
+                    echo '[tax_calculator ' . $shortcode_atts . ']';
                 }
         }

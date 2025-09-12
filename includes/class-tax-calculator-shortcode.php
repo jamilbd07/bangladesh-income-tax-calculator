@@ -32,11 +32,14 @@
         {
             // Parse shortcode attributes
             $atts = shortcode_atts( [
-                'theme' => 'default'
+                'theme' => 'default',
+                'title' => ''
              ], $atts, 'tax_calculator' );
 
-            // Sanitize theme attribute
-            $theme          = sanitize_text_field( $atts[ 'theme' ] );
+            // Sanitize attributes
+            $theme = sanitize_text_field( $atts[ 'theme' ] );
+            $title = sanitize_text_field( $atts[ 'title' ] );
+            error_log( $title );
             $allowed_themes = [ 'default', 'dark', 'light' ];
             if ( ! in_array( $theme, $allowed_themes ) ) {
                 $theme = 'default';
@@ -52,7 +55,7 @@
             ob_start();
         ?>
         <div class="bd-tax-calculator-wrapper tax-calc-<?php echo esc_attr( $theme ); ?>" id="<?php echo esc_attr( $instance_id ); ?>">
-            <?php echo $this->get_form_html(); ?>
+            <?php echo $this->get_form_html( $title ); ?>
             <?php echo $this->get_result_html(); ?>
         </div>
         <?php
@@ -62,16 +65,19 @@
                 /**
                  * Get the form HTML
                  *
+                 * @param string $title The title to display
                  * @return string Form HTML
                  */
-                private function get_form_html()
+                private function get_form_html( $title = 'Tax Calculator' )
                 {
                     ob_start();
                 ?>
         <form class="bd-tax-form" method="post">
+            <?php if ( ! empty( $title ) ): ?>
             <div class="bd-tax-form-header">
-                <h3><?php esc_html_e( 'Bangladesh Tax Calculator', 'bangladesh-tax-calculator' ); ?></h3>
+                <h3><?php echo esc_html( $title ); ?></h3>
             </div>
+            <?php endif; ?>
 
             <div class="bd-tax-form-body">
                 <div class="bd-tax-field">

@@ -230,7 +230,6 @@ function displayResults(result, formData, resultContainer) {
     safeUpdateText('.allowable-investment-display', formatTaka(result.rebateData.allowableInvestment));
     safeUpdateText('.rebate-a-display', formatTaka(result.rebateData.rebateA));
     safeUpdateText('.rebate-b-display', formatTaka(result.rebateData.rebateB));
-    safeUpdateText('.rebate-cap-display', formatTaka(result.rebateData.cap));
     safeUpdateText('.applied-rebate-display', formatTaka(result.rebateData.rebate));
     safeUpdateText('.final-tax-display', formatTaka(result.finalTax));
     safeUpdateText('.paid-tax-display', formatTaka(result.paidTax));

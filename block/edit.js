@@ -11,7 +11,8 @@ import {
 
 import {
 	PanelBody,
-	SelectControl
+	SelectControl,
+	TextControl
 } from '@wordpress/components';
 
 import { ServerSideRender } from '@wordpress/server-side-render';
@@ -27,17 +28,27 @@ const THEME_OPTIONS = [
 ];
 export default function Edit({ attributes, setAttributes }) {
 	const blockProps = useBlockProps();
-	const { theme = 'default' } = attributes;
+	const { theme = 'default', title = '' } = attributes;
 
 	// Handle theme change
 	const onThemeChange = (newTheme) => {
 		setAttributes({ theme: newTheme });
 	};
 
+	const onTitleChange = (newTitle) => {
+		setAttributes({ title: newTitle });
+	};
+
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Theme Settings', 'bangladesh-tax-calculator')}>
+				<PanelBody title={__('Settings', 'bangladesh-tax-calculator')}>
+					<TextControl
+						label={__('Title', 'bangladesh-tax-calculator')}
+						value={title}
+						onChange={onTitleChange}
+						help={__('Leave empty if you don\'t want to show the title.', 'bangladesh-tax-calculator')}
+					/>
 					<SelectControl
 						label={__('Theme', 'bangladesh-tax-calculator')}
 						value={theme}
@@ -57,7 +68,7 @@ export default function Edit({ attributes, setAttributes }) {
 						color: theme === 'dark' ? '#ecf0f1' : '#333'
 					}}>
 						<div className="bd-tax-form-header">
-							<h3>{__('Bangladesh Tax Calculator', 'bangladesh-tax-calculator')}</h3>
+							<h3>{title || 'Tax Calculator (Preview)'}</h3>
 						</div>
 						<div className="bd-tax-form-body">
 							<p style={{
