@@ -2,7 +2,7 @@
 === Bangladesh Income Tax Calculator – Personal Tax Calculation with Elementor Widget & Block Editor ===
 
 Contributors:      jamilbd07
-Tags:              tax calculator, bangladesh, income tax, shortcode, elementor, gutenberg
+Tags:              tax calculator, bangladesh, income tax, shortcode, elementor
 Tested up to:      6.8
 Stable tag:        1.0.0
 License:           GPLv3

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Bangladesh Income Tax Calculator
+ * Plugin Name:       Bangladesh Income Tax Calculator – Personal Tax Calculation with Elementor Widget & Block Editor
  * Description:       A comprehensive tax calculator for Bangladesh with shortcode, block editor, and Elementor widget support. Features multiple themes and responsive design.
  * Version:           1.0.0
  * Author:            MD Jamil Uddin
