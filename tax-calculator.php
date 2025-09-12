@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       Bangladesh Tax Calculator
- * Description:       A comprehensive tax calculator for Bangladesh FY 2025-2026 with shortcode, Gutenberg block, and Elementor widget support. Features multiple themes and responsive design.
+ * Plugin Name:       Bangladesh Income Tax Calculator
+ * Description:       A comprehensive tax calculator for Bangladesh with shortcode, block editor, and Elementor widget support. Features multiple themes and responsive design.
  * Version:           1.0.0
- * Author:            WordPress Telex
- * License:           GPLv2 or later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       bangladesh-tax-calculator
+ * Author:            MD Jamil Uddin
+ * License:           GPLv3
+ * License URI:       https://opensource.org/licenses/GPL-3.0
+ * Text Domain:       tax-calculator
  *
- * @package BangladeshTaxCalculator
+ * @package TaxCalculatorBangladesh
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,7 +32,6 @@ class Bangladesh_Tax_Calculator
     public function __construct()
     {
         add_action( 'init', [ $this, 'init' ] );
-        add_action( 'plugins_loaded', [ $this, 'load_textdomain' ] );
     }
 
     /**
@@ -96,14 +95,6 @@ class Bangladesh_Tax_Calculator
         if ( class_exists( 'Tax_Calculator_Elementor_Widget' ) ) {
             \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Tax_Calculator_Elementor_Widget() );
         }
-    }
-
-    /**
-     * Load plugin textdomain
-     */
-    public function load_textdomain()
-    {
-        load_plugin_textdomain( 'bangladesh-tax-calculator', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
     }
 }
 

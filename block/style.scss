@@ -1,8 +1,7 @@
-
 /**
  * Block styles for Bangladesh Tax Calculator block.
  */
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-form {
+.wp-block-telex-block-tax-calculator .bd-tax-form {
 	background: #f7fafd;
 	border-radius: 8px;
 	border: 1px solid #ddd;
@@ -10,41 +9,50 @@
 	max-width: 480px;
 	margin-bottom: 24px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator input[type="text"],
-.wp-block-telex-block-bangladesh-tax-calculator input[type="number"],
-.wp-block-telex-block-bangladesh-tax-calculator select {
+
+.wp-block-telex-block-tax-calculator input[type="text"],
+.wp-block-telex-block-tax-calculator input[type="number"],
+.wp-block-telex-block-tax-calculator select {
 	width: 100%;
 	padding: 4px 8px;
 	margin-top: 3px;
 	margin-bottom: 2px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-error {
+
+.wp-block-telex-block-tax-calculator .bd-tax-error {
 	color: #c00;
 	font-size: 0.96em;
 }
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-result {
+
+.wp-block-telex-block-tax-calculator .bd-tax-result {
 	margin-top: 10px;
 	background: #fff;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	padding: 12px 20px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator table {
+
+.wp-block-telex-block-tax-calculator table {
 	border-collapse: collapse;
 	margin-bottom: 12px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator th, .wp-block-telex-block-bangladesh-tax-calculator td {
+
+.wp-block-telex-block-tax-calculator th,
+.wp-block-telex-block-tax-calculator td {
 	padding: 5px 10px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator tr th {
+
+.wp-block-telex-block-tax-calculator tr th {
 	background: #f0f3f7;
 }
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-slab-table th, .wp-block-telex-block-bangladesh-tax-calculator .bd-tax-slab-table td {
+
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table th,
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table td {
 	border: 1px solid #ccd0d5;
 	text-align: right;
 }
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-slab-table th:first-child,
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-slab-table td:first-child  {
+
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table th:first-child,
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table td:first-child {
 	text-align: left;
 }
-    

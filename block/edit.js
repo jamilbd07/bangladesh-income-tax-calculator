@@ -22,9 +22,9 @@ import './editor.scss';
 
 // Theme options for the block
 const THEME_OPTIONS = [
-	{ label: __('Default', 'bangladesh-tax-calculator'), value: 'default' },
-	{ label: __('Dark', 'bangladesh-tax-calculator'), value: 'dark' },
-	{ label: __('Light', 'bangladesh-tax-calculator'), value: 'light' },
+	{ label: __('Default', 'tax-calculator'), value: 'default' },
+	{ label: __('Dark', 'tax-calculator'), value: 'dark' },
+	{ label: __('Light', 'tax-calculator'), value: 'light' },
 ];
 export default function Edit({ attributes, setAttributes }) {
 	const blockProps = useBlockProps();
@@ -42,19 +42,19 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Settings', 'bangladesh-tax-calculator')}>
+				<PanelBody title={__('Settings', 'tax-calculator')}>
 					<TextControl
-						label={__('Title', 'bangladesh-tax-calculator')}
+						label={__('Title', 'tax-calculator')}
 						value={title}
 						onChange={onTitleChange}
-						help={__('Leave empty if you don\'t want to show the title.', 'bangladesh-tax-calculator')}
+						help={__('Leave empty if you don\'t want to show the title.', 'tax-calculator')}
 					/>
 					<SelectControl
-						label={__('Theme', 'bangladesh-tax-calculator')}
+						label={__('Theme', 'tax-calculator')}
 						value={theme}
 						options={THEME_OPTIONS}
 						onChange={onThemeChange}
-						help={__('Choose the visual theme for the tax calculator.', 'bangladesh-tax-calculator')}
+						help={__('Choose the visual theme for the tax calculator.', 'tax-calculator')}
 					/>
 				</PanelBody>
 			</InspectorControls>
@@ -79,7 +79,7 @@ export default function Edit({ attributes, setAttributes }) {
 								margin: '0',
 								color: theme === 'dark' ? '#bdc3c7' : '#666'
 							}}>
-								{__('Tax Calculator Preview - Frontend functionality will be available on the published page.', 'bangladesh-tax-calculator')}
+								{__('Tax Calculator Preview - Frontend functionality will be available on the published page.', 'tax-calculator')}
 							</p>
 						</div>
 					</div>

@@ -1,4 +1,4 @@
-<?xml version="1.0"?><artefact xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="artefact.xsd" name="Bangladesh Tax Calculator" slug="bangladesh-tax-calculator" type="code-package">
+<?xml version="1.0"?><artefact xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="artefact.xsd" name="Bangladesh Tax Calculator" slug="tax-calculator" type="code-package">
   <file name="readme.txt">
     <description>This file contains the readme information for the block. It is used to provide information about the block, its usage, and any other relevant details.</description>
     <content><![CDATA[
@@ -20,7 +20,7 @@ The breakdown includes the total income, exemption, taxable income, tax due per 
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/bangladesh-tax-calculator` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/tax-calculator` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 
 == Frequently Asked Questions ==
@@ -48,7 +48,7 @@ No, it runs fully in the browser and does not record or transmit personal inform
 This block is for informational purposes only. Please consult a tax professional for official compliance.
 ]]></content>
   </file>
-  <file name="bangladesh-tax-calculator.php">
+  <file name="tax-calculator.php">
     <description>This file contains the block registration code in the form of a single block plugin. Any other plugin related functionality should be added to this file. All block rendering functionality should go to the `render.php` file.</description>
     <content><![CDATA[<?php
 /**
@@ -58,7 +58,7 @@ This block is for informational purposes only. Please consult a tax professional
  * Author:            WordPress Telex
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       bangladesh-tax-calculator-block-wp
+ * Text Domain:       tax-calculator-block-wp
  *
  * @package BangladeshTaxCalculator
  */
@@ -85,7 +85,7 @@ add_action( 'init', 'bangladesh_tax_calculator_block_init' );
   {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "telex/block-bangladesh-tax-calculator",
+	"name": "telex/block-tax-calculator",
 	"version": "0.1.0",
 	"title": "Bangladesh Tax Calculator",
 	"category": "widgets",
@@ -95,7 +95,7 @@ add_action( 'init', 'bangladesh_tax_calculator_block_init' );
 	"supports": {
 		"html": false
 	},
-	"textdomain": "bangladesh-tax-calculator-block-wp",
+	"textdomain": "tax-calculator-block-wp",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
@@ -305,28 +305,28 @@ export default function Edit() {
 	return (
 		<div { ...blockProps }>
 			<form className="bd-tax-form" onSubmit={handleSubmit} style={{ maxWidth: '480px', marginBottom: '22px', padding: '10px', border: '1px solid #ddd', borderRadius: 8, background: '#f7fafd' }}>
-				<h3>{__('Bangladesh Tax Calculator (2025-26)', 'bangladesh-tax-calculator-block-wp')}</h3>
+				<h3>{__('Bangladesh Tax Calculator (2025-26)', 'tax-calculator-block-wp')}</h3>
 				<div style={{ marginBottom: 10 }}>
 					<label>
-						{__('Full Name', 'bangladesh-tax-calculator-block-wp')}<br />
+						{__('Full Name', 'tax-calculator-block-wp')}<br />
 						<input name="fullName" type="text" value={inputs.fullName} onChange={handleChange} style={{ width: '100%' }} />
 						{errors.fullName && <div className="bd-tax-error">{errors.fullName}</div>}
 					</label>
 				</div>
 				<div style={{ marginBottom: 10 }}>
 					<label>
-						{__('Gender', 'bangladesh-tax-calculator-block-wp')}<br />
+						{__('Gender', 'tax-calculator-block-wp')}<br />
 						<select name="gender" value={inputs.gender} onChange={handleChange} style={{ width: '100%' }}>
 							<option value="" disabled>-- Select --</option>
-							<option value="male">{__('Male', 'bangladesh-tax-calculator-block-wp')}</option>
-							<option value="female">{__('Female', 'bangladesh-tax-calculator-block-wp')}</option>
+							<option value="male">{__('Male', 'tax-calculator-block-wp')}</option>
+							<option value="female">{__('Female', 'tax-calculator-block-wp')}</option>
 						</select>
 						{errors.gender && <div className="bd-tax-error">{errors.gender}</div>}
 					</label>
 				</div>
 				<div style={{ marginBottom: 10 }}>
 					<label>
-						{__('Age', 'bangladesh-tax-calculator-block-wp')}<br />
+						{__('Age', 'tax-calculator-block-wp')}<br />
 						<input name="age" type="number" value={inputs.age} onChange={handleChange} style={{ width: '100%' }} min="0" />
 						{errors.age && <div className="bd-tax-error">{errors.age}</div>}
 					</label>
@@ -334,62 +334,62 @@ export default function Edit() {
 				<div style={{ display: 'flex', gap: '16px', marginBottom: 10 }}>
 					<label>
 						<input name="thirdGender" type="checkbox" checked={inputs.thirdGender} onChange={handleChange} />
-						{__('Is Third Gender', 'bangladesh-tax-calculator-block-wp')}
+						{__('Is Third Gender', 'tax-calculator-block-wp')}
 					</label>
 					<label>
 						<input name="freedomFighter" type="checkbox" checked={inputs.freedomFighter} onChange={handleChange} />
-						{__('Is Freedom Fighter', 'bangladesh-tax-calculator-block-wp')}
+						{__('Is Freedom Fighter', 'tax-calculator-block-wp')}
 					</label>
 					<label>
 						<input name="disabled" type="checkbox" checked={inputs.disabled} onChange={handleChange} />
-						{__('Is Disabled', 'bangladesh-tax-calculator-block-wp')}
+						{__('Is Disabled', 'tax-calculator-block-wp')}
 					</label>
 				</div>
 				<div style={{ marginBottom: 10 }}>
 					<label>
-						{__('Total Income (Yearly, Taka)', 'bangladesh-tax-calculator-block-wp')}<br />
+						{__('Total Income (Yearly, Taka)', 'tax-calculator-block-wp')}<br />
 						<input name="totalIncome" type="number" value={inputs.totalIncome} onChange={handleChange} min="0" style={{ width: '100%' }} />
 						{errors.totalIncome && <div className="bd-tax-error">{errors.totalIncome}</div>}
 					</label>
 				</div>
 				<div style={{ marginBottom: 10 }}>
 					<label>
-						{__('Total Investment (Yearly, Taka)', 'bangladesh-tax-calculator-block-wp')}<br />
+						{__('Total Investment (Yearly, Taka)', 'tax-calculator-block-wp')}<br />
 						<input name="totalInvestment" type="number" value={inputs.totalInvestment} onChange={handleChange} min="0" style={{ width: '100%' }} />
 						{errors.totalInvestment && <div className="bd-tax-error">{errors.totalInvestment}</div>}
 					</label>
 				</div>
 				<div>
-					<button type="submit">{__('Calculate Tax', 'bangladesh-tax-calculator-block-wp')}</button>
+					<button type="submit">{__('Calculate Tax', 'tax-calculator-block-wp')}</button>
 				</div>
 			</form>
 			{result && (
 				<div className="bd-tax-result" style={{ background: 'white', border: '1px solid #ddd', borderRadius: 8, padding: '12px', maxWidth: '620px' }}>
-					<h4>{__('Tax Calculation Result', 'bangladesh-tax-calculator-block-wp')}</h4>
+					<h4>{__('Tax Calculation Result', 'tax-calculator-block-wp')}</h4>
 					<table className="bd-tax-result-table">
 						<tbody>
 							<tr>
-								<th align="left">{__('Total Income', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Total Income', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(parseFloat(inputs.totalIncome))}</td>
 							</tr>
 							<tr>
-								<th align="left">{__('Exemption Limit', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Exemption Limit', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.exemption)}</td>
 							</tr>
 							<tr>
-								<th align="left">{__('Taxable Income', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Taxable Income', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.taxableIncome)}</td>
 							</tr>
 						</tbody>
 					</table>
-					<h5 style={{ marginTop: 18 }}>{__('Tax Calculation (Slab by Slab)', 'bangladesh-tax-calculator-block-wp')}</h5>
+					<h5 style={{ marginTop: 18 }}>{__('Tax Calculation (Slab by Slab)', 'tax-calculator-block-wp')}</h5>
 					<table className="bd-tax-slab-table" style={{ width: '100%' }}>
 						<thead>
 							<tr>
-								<th>{__('Slab Range (৳)', 'bangladesh-tax-calculator-block-wp')}</th>
-								<th>{__('Rate (%)', 'bangladesh-tax-calculator-block-wp')}</th>
-								<th>{__('Taxable Amount', 'bangladesh-tax-calculator-block-wp')}</th>
-								<th>{__('Tax', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th>{__('Slab Range (৳)', 'tax-calculator-block-wp')}</th>
+								<th>{__('Rate (%)', 'tax-calculator-block-wp')}</th>
+								<th>{__('Taxable Amount', 'tax-calculator-block-wp')}</th>
+								<th>{__('Tax', 'tax-calculator-block-wp')}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -406,36 +406,36 @@ export default function Edit() {
 					<table className="bd-tax-summary" style={{ marginTop: 18 }}>
 						<tbody>
 							<tr>
-								<th align="left">{__('Total Tax (Before Rebate)', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Total Tax (Before Rebate)', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.totalTax)}</td>
 							</tr>
 							<tr>
-								<th align="left">{__('Allowable Investment Used', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Allowable Investment Used', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.rebateData.allowableInvestment)}</td>
 							</tr>
 							<tr>
-								<th align="left">{__('Rebate A (3% of taxable income)', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Rebate A (3% of taxable income)', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.rebateData.rebateA)}</td>
 							</tr>
 							<tr>
-								<th align="left">{__('Rebate B (15% of applicable investment)', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Rebate B (15% of applicable investment)', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.rebateData.rebateB)}</td>
 							</tr>
 							<tr>
-								<th align="left">{__('Maximum Rebate Cap', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Maximum Rebate Cap', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.rebateData.cap)}</td>
 							</tr>
 							<tr>
-								<th align="left">{__('Applied Rebate', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Applied Rebate', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.rebateData.rebate)}</td>
 							</tr>
 							<tr>
-								<th align="left">{__('Final Tax After Rebate', 'bangladesh-tax-calculator-block-wp')}</th>
+								<th align="left">{__('Final Tax After Rebate', 'tax-calculator-block-wp')}</th>
 								<td>{formatTaka(result.finalTax)}</td>
 							</tr>
 						</tbody>
 					</table>
-					<div style={{ marginTop: 16, fontSize: '0.93em', color: '#666' }}>{__('The calculation is for informational purposes only. Check with an official source for compliance.', 'bangladesh-tax-calculator-block-wp')}</div>
+					<div style={{ marginTop: 16, fontSize: '0.93em', color: '#666' }}>{__('The calculation is for informational purposes only. Check with an official source for compliance.', 'tax-calculator-block-wp')}</div>
 				</div>
 			)}
 		</div>
@@ -471,7 +471,7 @@ export default function save() {
 /**
  * Block styles for Bangladesh Tax Calculator block.
  */
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-form {
+.wp-block-telex-block-tax-calculator .bd-tax-form {
 	background: #f7fafd;
 	border-radius: 8px;
 	border: 1px solid #ddd;
@@ -479,41 +479,41 @@ export default function save() {
 	max-width: 480px;
 	margin-bottom: 24px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator input[type="text"],
-.wp-block-telex-block-bangladesh-tax-calculator input[type="number"],
-.wp-block-telex-block-bangladesh-tax-calculator select {
+.wp-block-telex-block-tax-calculator input[type="text"],
+.wp-block-telex-block-tax-calculator input[type="number"],
+.wp-block-telex-block-tax-calculator select {
 	width: 100%;
 	padding: 4px 8px;
 	margin-top: 3px;
 	margin-bottom: 2px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-error {
+.wp-block-telex-block-tax-calculator .bd-tax-error {
 	color: #c00;
 	font-size: 0.96em;
 }
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-result {
+.wp-block-telex-block-tax-calculator .bd-tax-result {
 	margin-top: 10px;
 	background: #fff;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	padding: 12px 20px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator table {
+.wp-block-telex-block-tax-calculator table {
 	border-collapse: collapse;
 	margin-bottom: 12px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator th, .wp-block-telex-block-bangladesh-tax-calculator td {
+.wp-block-telex-block-tax-calculator th, .wp-block-telex-block-tax-calculator td {
 	padding: 5px 10px;
 }
-.wp-block-telex-block-bangladesh-tax-calculator tr th {
+.wp-block-telex-block-tax-calculator tr th {
 	background: #f0f3f7;
 }
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-slab-table th, .wp-block-telex-block-bangladesh-tax-calculator .bd-tax-slab-table td {
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table th, .wp-block-telex-block-tax-calculator .bd-tax-slab-table td {
 	border: 1px solid #ccd0d5;
 	text-align: right;
 }
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-slab-table th:first-child,
-.wp-block-telex-block-bangladesh-tax-calculator .bd-tax-slab-table td:first-child  {
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table th:first-child,
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table td:first-child  {
 	text-align: left;
 }
     ]]></content>
@@ -524,7 +524,7 @@ export default function save() {
 /**
  * Additional editor styles for Bangladesh Tax Calculator.
  */
-.wp-block-telex-block-bangladesh-tax-calculator {
+.wp-block-telex-block-tax-calculator {
 	border: 1px dashed #21759b;
 }
     ]]></content>
@@ -545,7 +545,7 @@ console.log("Bangladesh Tax Calculator block loaded on the front end.");
     <description>The AI assistant should only edit 'user_provided_block_name_slug', 'description' and resolve 'isDynamicVariant' in this file and ALWAYS INCLUDE IT. This file includes the necessary scripts for building, formatting, and linting the block code. Dependencies are managed at the workspace level via pnpm.</description>
     <content><![CDATA[
   {
-	"name": "bangladesh-tax-calculator",
+	"name": "tax-calculator",
 	"version": "0.1.0",
 	"description": "User-friendly tax calculator for FY 2025-2026 in Bangladesh, supporting all standard slabs, exemption limits, and rebates per NBR rules.",
 	"author": "WordPress Telex",
