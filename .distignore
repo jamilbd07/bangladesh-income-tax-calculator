@@ -1,0 +1,119 @@
+# Development files
+.git/
+.gitignore
+.distignore
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Node.js and npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package.json
+package-lock.json
+yarn.lock
+
+# Source files (since we include built files)
+src/
+*.js.map
+*.css.map
+
+# Build tools and configuration
+webpack.config.js
+babel.config.js
+.babelrc
+.eslintrc*
+.stylelintrc*
+.prettierrc*
+.editorconfig
+tsconfig.json
+jsconfig.json
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+tests/
+test/
+*.test.js
+*.spec.js
+phpunit.xml
+phpunit.xml.dist
+.phpunit.result.cache
+coverage/
+.nyc_output/
+
+# Documentation (development)
+docs/
+CONTRIBUTING.md
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+
+# Composer (development dependencies)
+composer.json
+composer.lock
+vendor/
+
+# Environment files
+.env*
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Development HTML files
+test-frontend.html
+demo.html
+example.html
+
+# Linting and formatting
+.eslintcache
+.stylelintcache
+
+# WordPress specific development
+wp-cli.yml
+.wp-env.json
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Development scripts
+scripts/
+bin/dev/
+gulpfile.js
+Gruntfile.js
+
+# Source maps
+*.map
+
+# Development assets (unminified)
+assets/src/
+assets/dev/

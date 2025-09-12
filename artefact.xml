@@ -1,0 +1,566 @@
+<?xml version="1.0"?><artefact xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="artefact.xsd" name="Bangladesh Tax Calculator" slug="tax-calculator" type="code-package">
+  <file name="readme.txt">
+    <description>This file contains the readme information for the block. It is used to provide information about the block, its usage, and any other relevant details.</description>
+    <content><![CDATA[
+=== Bangladesh Tax Calculator ===
+
+Contributors:      WordPress Telex
+Tags:              block, tax, calculator, bangladesh, income tax, financial, form
+Tested up to:      6.8
+Stable tag:        0.1.0
+License:           GPLv2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+A block for calculating personal income tax in Bangladesh for FY 2025-2026. Users enter their information (including age, gender, third gender/freedom fighter/disabled status, and income/investment details), and the block provides a full breakdown of tax due, including rebates and progressive slab calculations.
+
+== Description ==
+
+This block helps users easily estimate their annual personal tax liability according to Bangladesh's latest 2025-2026 income tax rules. The block collects key profile and financial information, applies appropriate exemption thresholds, computes tax across all defined slabs, automatically accounts for special statuses (e.g. women, senior citizens, third gender, freedom fighters, persons with disabilities), and applies the investment-based tax rebate logic as required.
+
+The breakdown includes the total income, exemption, taxable income, tax due per slab, total before rebate, eligible rebate, and net tax after rebate.
+
+== Installation ==
+
+1. Upload the plugin files to the `/wp-content/plugins/tax-calculator` directory, or install the plugin through the WordPress plugins screen directly.
+1. Activate the plugin through the 'Plugins' screen in WordPress
+
+== Frequently Asked Questions ==
+
+= What is the source of the tax rules? =
+
+This block is based on Bangladesh National Board of Revenue (NBR) rules for Assessment Year 2025-2026.
+
+= Does the block save data or submit to tax authorities? =
+
+No, it runs fully in the browser and does not record or transmit personal information.
+
+== Screenshots ==
+
+1. The tax calculation form and result display in the editor.
+2. Completed tax breakdown after calculation.
+
+== Changelog ==
+
+= 0.1.0 =
+* Initial release: client-side Bangladesh tax calculator form for FY 2025-2026.
+
+== Arbitrary section ==
+
+This block is for informational purposes only. Please consult a tax professional for official compliance.
+]]></content>
+  </file>
+  <file name="tax-calculator.php">
+    <description>This file contains the block registration code in the form of a single block plugin. Any other plugin related functionality should be added to this file. All block rendering functionality should go to the `render.php` file.</description>
+    <content><![CDATA[<?php
+/**
+ * Plugin Name:       Bangladesh Tax Calculator
+ * Description:       A block for calculating personal income tax in Bangladesh for FY 2025-2026. Users enter their information (including age, gender, third gender/freedom fighter/disabled status, and income/investment details), and the block provides a full breakdown of tax due, including rebates and progressive slab calculations.
+ * Version:           0.1.0
+ * Author:            WordPress Telex
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       tax-calculator-block-wp
+ *
+ * @package BangladeshTaxCalculator
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+/**
+ * Registers the block using the metadata loaded from the `block.json` file.
+ * Behind the scenes, it registers also all assets so they can be enqueued
+ * through the block editor in the corresponding context.
+ *
+ * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ */
+function bangladesh_tax_calculator_block_init() {
+	register_block_type( __DIR__ . '/build/' );
+}
+add_action( 'init', 'bangladesh_tax_calculator_block_init' );
+	]]></content>
+  </file>
+  <file name="block.json">
+    <description>This file contains metadata about the block including its name, title, category, icon, and other properties. The icon is a WordPress Dashicon name.</description>
+    <content><![CDATA[
+  {
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "telex/block-tax-calculator",
+	"version": "0.1.0",
+	"title": "Bangladesh Tax Calculator",
+	"category": "widgets",
+	"icon": "calculator",
+	"description": "User-friendly tax calculator for FY 2025-2026 in Bangladesh, supporting all standard slabs, exemption limits, and rebates per NBR rules.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "tax-calculator-block-wp",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+  }
+  ]]></content>
+  </file>
+  <file name="index.js">
+    <description>This file registers the block, specifies the edit and save functions, and loads the block's metadata</description>
+    <content><![CDATA[
+  /**
+ * Registers a new block provided a unique name and an object defining its behavior.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
+ */
+import { registerBlockType } from '@wordpress/blocks';
+
+/**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * All files containing `style` keyword are bundled together. The code used
+ * gets applied both to the front of your site and to the editor.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+import './style.scss';
+
+/**
+ * Internal dependencies
+ */
+import Edit from './edit';
+import save from './save';
+import metadata from './block.json';
+
+/**
+ * Every block starts by registering a new block type definition.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
+ */
+registerBlockType( metadata.name, {
+	/**
+	 * @see ./edit.js
+	 */
+	edit: Edit,
+
+	/**
+	 * @see ./save.js
+	 */
+	save,
+} );
+	]]></content>
+  </file>
+  <file name="edit.js">
+    <description>This file contains the edit function for the block which is responsible for rendering the block in the editor.</description>
+    <content><![CDATA[
+/**
+ * Retrieves the translation of text.
+ */
+import { __ } from '@wordpress/i18n';
+
+import { useBlockProps } from '@wordpress/block-editor';
+
+import { useState } from '@wordpress/element';
+
+import './editor.scss';
+
+function getExemptionLimit({ gender, age, thirdGender, disabled, freedomFighter }) {
+	// FY 2025-2026 Bangladesh
+	if (thirdGender) return 525000;
+	if (freedomFighter || disabled) return 500000;
+	if (gender === 'female' || age >= 65) return 425000;
+	return 375000;
+}
+function formatTaka(amount) {
+	return '৳' + amount.toLocaleString('en-BD');
+}
+function calculateTaxSlabs(taxable) {
+	const slabs = [
+		{ upto: 375000, rate: 0 },
+		{ upto: 675000, rate: 0.1 },
+		{ upto: 1075000, rate: 0.15 },
+		{ upto: 1575000, rate: 0.2 },
+		{ upto: 3575000, rate: 0.25 },
+	];
+	const slabLimits = [375000, 300000, 400000, 500000, 2000000];
+	let remaining = taxable;
+	let lower = 0;
+	let tax = 0;
+	let breakdown = [];
+	for (let i = 0; i < slabLimits.length && remaining > 0; ++i) {
+		const thisSlabLimit = slabLimits[i];
+		const taxableHere = Math.min(remaining, thisSlabLimit);
+		const slabRate =
+			i === 0 ? 0
+			: i === 1 ? 0.1
+			: i === 2 ? 0.15
+			: i === 3 ? 0.2
+			: 0.25;
+		const slabStart = lower + 1;
+		const slabEnd = lower + thisSlabLimit;
+		const amountInThisSlab = taxableHere > 0 ? taxableHere : 0;
+		const thisTax = slabRate * amountInThisSlab;
+		breakdown.push({
+			start: slabStart,
+			end: slabEnd,
+			rate: slabRate,
+			amount: amountInThisSlab,
+			tax: thisTax,
+		});
+		tax += thisTax;
+		lower += thisSlabLimit;
+		remaining -= amountInThisSlab;
+	}
+	if (remaining > 0) {
+		const thisTax = 0.3 * remaining;
+		breakdown.push({
+			start: lower + 1,
+			end: lower + remaining,
+			rate: 0.3,
+			amount: remaining,
+			tax: thisTax,
+		});
+		tax += thisTax;
+	}
+	return { breakdown, totalTax: Math.round(tax) };
+}
+function calculateInvestmentRebate(taxable, investment, totalTax) {
+	// Allowable investment: up to 25% of total income or actual, whichever is lower, capped at 15000000 (not in prompt, conservative cap removed)
+	const investmentAllowed = Math.min(investment, taxable * 0.25);
+	const rebateA = 0.03 * taxable;
+	const rebateB = 0.15 * investmentAllowed;
+	const rebateCap = 1000000;
+	const rebate = Math.min(rebateA, rebateB, rebateCap);
+	return {
+		rebateA: Math.round(rebateA),
+		rebateB: Math.round(rebateB),
+		cap: rebateCap,
+		allowableInvestment: Math.round(investmentAllowed),
+		rebate: Math.min(Math.round(rebate), Math.round(totalTax))
+	};
+}
+export default function Edit() {
+	const blockProps = useBlockProps();
+
+	const [inputs, setInputs] = useState({
+		fullName: '',
+		gender: '',
+		age: '',
+		thirdGender: false,
+		freedomFighter: false,
+		disabled: false,
+		totalIncome: '',
+		totalInvestment: '',
+	});
+	const [result, setResult] = useState(null);
+	const [errors, setErrors] = useState({});
+
+	const handleChange = (e) => {
+		const { name, type, value, checked } = e.target;
+		setInputs((prev) => ({
+			...prev,
+			[name]: type === 'checkbox' ? checked : value,
+		}));
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		let validation = {};
+		if (!inputs.fullName) validation.fullName = 'Full Name is required';
+		if (!inputs.gender) validation.gender = 'Gender required';
+		if (inputs.age === '' || isNaN(inputs.age) || parseInt(inputs.age) < 0) validation.age = 'Enter valid age';
+		if (!inputs.totalIncome || isNaN(inputs.totalIncome) || parseFloat(inputs.totalIncome) < 0) validation.totalIncome = 'Income required';
+		if (inputs.totalInvestment === '' || isNaN(inputs.totalInvestment) || parseFloat(inputs.totalInvestment) < 0) validation.totalInvestment = 'Investment required';
+		if (Object.keys(validation).length) {
+			setErrors(validation);
+			setResult(null);
+			return;
+		}
+		setErrors({});
+		const values = {
+			...inputs,
+			age: parseInt(inputs.age),
+			totalIncome: parseFloat(inputs.totalIncome),
+			totalInvestment: parseFloat(inputs.totalInvestment)
+		};
+		const exemption = getExemptionLimit({
+			gender: values.gender,
+			age: values.age,
+			thirdGender: values.thirdGender,
+			disabled: values.disabled,
+			freedomFighter: values.freedomFighter
+		});
+		const taxableIncome = Math.max(values.totalIncome - exemption, 0);
+		const { breakdown, totalTax } = calculateTaxSlabs(taxableIncome);
+		const rebateData = calculateInvestmentRebate(taxableIncome, values.totalInvestment, totalTax);
+		const finalTax = Math.max(0, totalTax - rebateData.rebate);
+
+		setResult({
+			exemption,
+			taxableIncome,
+			breakdown,
+			totalTax,
+			rebateData,
+			finalTax
+		});
+	};
+
+	return (
+		<div { ...blockProps }>
+			<form className="bd-tax-form" onSubmit={handleSubmit} style={{ maxWidth: '480px', marginBottom: '22px', padding: '10px', border: '1px solid #ddd', borderRadius: 8, background: '#f7fafd' }}>
+				<h3>{__('Bangladesh Tax Calculator (2025-26)', 'tax-calculator-block-wp')}</h3>
+				<div style={{ marginBottom: 10 }}>
+					<label>
+						{__('Full Name', 'tax-calculator-block-wp')}<br />
+						<input name="fullName" type="text" value={inputs.fullName} onChange={handleChange} style={{ width: '100%' }} />
+						{errors.fullName && <div className="bd-tax-error">{errors.fullName}</div>}
+					</label>
+				</div>
+				<div style={{ marginBottom: 10 }}>
+					<label>
+						{__('Gender', 'tax-calculator-block-wp')}<br />
+						<select name="gender" value={inputs.gender} onChange={handleChange} style={{ width: '100%' }}>
+							<option value="" disabled>-- Select --</option>
+							<option value="male">{__('Male', 'tax-calculator-block-wp')}</option>
+							<option value="female">{__('Female', 'tax-calculator-block-wp')}</option>
+						</select>
+						{errors.gender && <div className="bd-tax-error">{errors.gender}</div>}
+					</label>
+				</div>
+				<div style={{ marginBottom: 10 }}>
+					<label>
+						{__('Age', 'tax-calculator-block-wp')}<br />
+						<input name="age" type="number" value={inputs.age} onChange={handleChange} style={{ width: '100%' }} min="0" />
+						{errors.age && <div className="bd-tax-error">{errors.age}</div>}
+					</label>
+				</div>
+				<div style={{ display: 'flex', gap: '16px', marginBottom: 10 }}>
+					<label>
+						<input name="thirdGender" type="checkbox" checked={inputs.thirdGender} onChange={handleChange} />
+						{__('Is Third Gender', 'tax-calculator-block-wp')}
+					</label>
+					<label>
+						<input name="freedomFighter" type="checkbox" checked={inputs.freedomFighter} onChange={handleChange} />
+						{__('Is Freedom Fighter', 'tax-calculator-block-wp')}
+					</label>
+					<label>
+						<input name="disabled" type="checkbox" checked={inputs.disabled} onChange={handleChange} />
+						{__('Is Disabled', 'tax-calculator-block-wp')}
+					</label>
+				</div>
+				<div style={{ marginBottom: 10 }}>
+					<label>
+						{__('Total Income (Yearly, Taka)', 'tax-calculator-block-wp')}<br />
+						<input name="totalIncome" type="number" value={inputs.totalIncome} onChange={handleChange} min="0" style={{ width: '100%' }} />
+						{errors.totalIncome && <div className="bd-tax-error">{errors.totalIncome}</div>}
+					</label>
+				</div>
+				<div style={{ marginBottom: 10 }}>
+					<label>
+						{__('Total Investment (Yearly, Taka)', 'tax-calculator-block-wp')}<br />
+						<input name="totalInvestment" type="number" value={inputs.totalInvestment} onChange={handleChange} min="0" style={{ width: '100%' }} />
+						{errors.totalInvestment && <div className="bd-tax-error">{errors.totalInvestment}</div>}
+					</label>
+				</div>
+				<div>
+					<button type="submit">{__('Calculate Tax', 'tax-calculator-block-wp')}</button>
+				</div>
+			</form>
+			{result && (
+				<div className="bd-tax-result" style={{ background: 'white', border: '1px solid #ddd', borderRadius: 8, padding: '12px', maxWidth: '620px' }}>
+					<h4>{__('Tax Calculation Result', 'tax-calculator-block-wp')}</h4>
+					<table className="bd-tax-result-table">
+						<tbody>
+							<tr>
+								<th align="left">{__('Total Income', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(parseFloat(inputs.totalIncome))}</td>
+							</tr>
+							<tr>
+								<th align="left">{__('Exemption Limit', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.exemption)}</td>
+							</tr>
+							<tr>
+								<th align="left">{__('Taxable Income', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.taxableIncome)}</td>
+							</tr>
+						</tbody>
+					</table>
+					<h5 style={{ marginTop: 18 }}>{__('Tax Calculation (Slab by Slab)', 'tax-calculator-block-wp')}</h5>
+					<table className="bd-tax-slab-table" style={{ width: '100%' }}>
+						<thead>
+							<tr>
+								<th>{__('Slab Range (৳)', 'tax-calculator-block-wp')}</th>
+								<th>{__('Rate (%)', 'tax-calculator-block-wp')}</th>
+								<th>{__('Taxable Amount', 'tax-calculator-block-wp')}</th>
+								<th>{__('Tax', 'tax-calculator-block-wp')}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{result.breakdown.map((row, idx) => (
+								<tr key={idx}>
+									<td>{formatTaka(row.start)} – {formatTaka(row.end)}</td>
+									<td>{Math.round(row.rate * 100)}</td>
+									<td>{formatTaka(row.amount)}</td>
+									<td>{formatTaka(Math.round(row.tax))}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+					<table className="bd-tax-summary" style={{ marginTop: 18 }}>
+						<tbody>
+							<tr>
+								<th align="left">{__('Total Tax (Before Rebate)', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.totalTax)}</td>
+							</tr>
+							<tr>
+								<th align="left">{__('Allowable Investment Used', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.rebateData.allowableInvestment)}</td>
+							</tr>
+							<tr>
+								<th align="left">{__('Rebate A (3% of taxable income)', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.rebateData.rebateA)}</td>
+							</tr>
+							<tr>
+								<th align="left">{__('Rebate B (15% of applicable investment)', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.rebateData.rebateB)}</td>
+							</tr>
+							<tr>
+								<th align="left">{__('Maximum Rebate Cap', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.rebateData.cap)}</td>
+							</tr>
+							<tr>
+								<th align="left">{__('Applied Rebate', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.rebateData.rebate)}</td>
+							</tr>
+							<tr>
+								<th align="left">{__('Final Tax After Rebate', 'tax-calculator-block-wp')}</th>
+								<td>{formatTaka(result.finalTax)}</td>
+							</tr>
+						</tbody>
+					</table>
+					<div style={{ marginTop: 16, fontSize: '0.93em', color: '#666' }}>{__('The calculation is for informational purposes only. Check with an official source for compliance.', 'tax-calculator-block-wp')}</div>
+				</div>
+			)}
+		</div>
+	);
+}
+    ]]></content>
+  </file>
+  <file name="save.js">
+    <description>This file contains the save function for the block which is responsible for creating the static result of rendering the block on the client to display the saved result on the front end.</description>
+    <content><![CDATA[
+/**
+ * React hook that is used to mark the block wrapper element.
+ */
+import { useBlockProps } from '@wordpress/block-editor';
+
+/**
+ * The save function outputs a static container and a notice.
+ * All interactivity will be provided via view.js at runtime on the front-end.
+ */
+export default function save() {
+	return (
+		<div { ...useBlockProps.save() }>
+			<p><strong>Bangladesh Tax Calculator</strong></p>
+			<p>This calculator form and result will appear on your site here. Use the front-end of your site to calculate.</p>
+		</div>
+	);
+}
+]]></content>
+  </file>
+  <file name="style.scss">
+    <description>This file contains styles for the block in the front end.</description>
+    <content><![CDATA[
+/**
+ * Block styles for Bangladesh Tax Calculator block.
+ */
+.wp-block-telex-block-tax-calculator .bd-tax-form {
+	background: #f7fafd;
+	border-radius: 8px;
+	border: 1px solid #ddd;
+	padding: 10px 18px;
+	max-width: 480px;
+	margin-bottom: 24px;
+}
+.wp-block-telex-block-tax-calculator input[type="text"],
+.wp-block-telex-block-tax-calculator input[type="number"],
+.wp-block-telex-block-tax-calculator select {
+	width: 100%;
+	padding: 4px 8px;
+	margin-top: 3px;
+	margin-bottom: 2px;
+}
+.wp-block-telex-block-tax-calculator .bd-tax-error {
+	color: #c00;
+	font-size: 0.96em;
+}
+.wp-block-telex-block-tax-calculator .bd-tax-result {
+	margin-top: 10px;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 12px 20px;
+}
+.wp-block-telex-block-tax-calculator table {
+	border-collapse: collapse;
+	margin-bottom: 12px;
+}
+.wp-block-telex-block-tax-calculator th, .wp-block-telex-block-tax-calculator td {
+	padding: 5px 10px;
+}
+.wp-block-telex-block-tax-calculator tr th {
+	background: #f0f3f7;
+}
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table th, .wp-block-telex-block-tax-calculator .bd-tax-slab-table td {
+	border: 1px solid #ccd0d5;
+	text-align: right;
+}
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table th:first-child,
+.wp-block-telex-block-tax-calculator .bd-tax-slab-table td:first-child  {
+	text-align: left;
+}
+    ]]></content>
+  </file>
+  <file name="editor.scss">
+    <description>This file contains styles for the block in the editor.</description>
+    <content><![CDATA[
+/**
+ * Additional editor styles for Bangladesh Tax Calculator.
+ */
+.wp-block-telex-block-tax-calculator {
+	border: 1px dashed #21759b;
+}
+    ]]></content>
+  </file>
+  <file name="view.js">
+    <description>This file contains the view function for the block which is responsible for rendering interactive behaviors of the block on the front end. Ideally using the WordPress interactivity API.</description>
+    <content><![CDATA[
+/* eslint-disable no-console */
+console.log("Bangladesh Tax Calculator block loaded on the front end.");
+/* eslint-enable no-console */
+    ]]></content>
+  </file>
+  <file name="render.php">
+    <description>This file contains the render callback function for the block, which is responsible for rendering the block content on the front end. A render function should exist only if the block is dynamic.</description>
+    <content><![CDATA[]]></content>
+  </file>
+  <file name="package.json">
+    <description>The AI assistant should only edit 'user_provided_block_name_slug', 'description' and resolve 'isDynamicVariant' in this file and ALWAYS INCLUDE IT. This file includes the necessary scripts for building, formatting, and linting the block code. Dependencies are managed at the workspace level via pnpm.</description>
+    <content><![CDATA[
+  {
+	"name": "tax-calculator",
+	"version": "0.1.0",
+	"description": "User-friendly tax calculator for FY 2025-2026 in Bangladesh, supporting all standard slabs, exemption limits, and rebates per NBR rules.",
+	"author": "WordPress Telex",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --webpack-copy-php",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --blocks-manifest"
+	}
+}
+    ]]></content>
+  </file>
+</artefact>
