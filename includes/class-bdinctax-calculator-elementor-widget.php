@@ -12,7 +12,7 @@
     /**
      * Tax Calculator Elementor Widget Class
      */
-    class Tax_Calculator_Elementor_Widget extends \Elementor\Widget_Base
+    class BDIncTax_Calculator_Elementor_Widget extends \Elementor\Widget_Base
     {
 
         /**
@@ -22,7 +22,7 @@
          */
         public function get_name()
         {
-            return 'tax-calculator-bangladesh';
+            return 'bangladesh-income-tax-calculator';
         }
 
         /**
@@ -32,7 +32,7 @@
          */
         public function get_title()
         {
-            return esc_html__( 'Tax Calculator Bangladesh', 'income-tax-calculator' );
+            return esc_html__( 'Bangladesh Income Tax Calculator', 'bangladesh-income-tax-calculator' );
         }
 
         /**
@@ -74,7 +74,7 @@
             $this->start_controls_section(
                 'content_section',
                 [
-                    'label' => esc_html__( 'Content', 'income-tax-calculator' ),
+                    'label' => esc_html__( 'Content', 'bangladesh-income-tax-calculator' ),
                     'tab'   => \Elementor\Controls_Manager::TAB_CONTENT
                  ]
             );
@@ -82,26 +82,26 @@
             $this->add_control(
                 'title',
                 [
-                    'label'       => esc_html__( 'Title', 'income-tax-calculator' ),
+                    'label'       => esc_html__( 'Title', 'bangladesh-income-tax-calculator' ),
                     'type'        => \Elementor\Controls_Manager::TEXT,
                     'default'     => 'Tax Calculator',
-                    'placeholder' => esc_html__( 'Enter title...', 'income-tax-calculator' ),
-                    'description' => esc_html__( 'Leave empty if you don\'t want to show the title.', 'income-tax-calculator' )
+                    'placeholder' => esc_html__( 'Enter title...', 'bangladesh-income-tax-calculator' ),
+                    'description' => esc_html__( 'Leave empty if you don\'t want to show the title.', 'bangladesh-income-tax-calculator' )
                  ]
             );
 
             $this->add_control(
                 'theme',
                 [
-                    'label'       => esc_html__( 'Theme', 'income-tax-calculator' ),
+                    'label'       => esc_html__( 'Theme', 'bangladesh-income-tax-calculator' ),
                     'type'        => \Elementor\Controls_Manager::SELECT,
                     'default'     => 'default',
                     'options'     => [
-                        'default' => esc_html__( 'Default', 'income-tax-calculator' ),
-                        'dark'    => esc_html__( 'Dark', 'income-tax-calculator' ),
-                        'light'   => esc_html__( 'Light', 'income-tax-calculator' )
+                        'default' => esc_html__( 'Default', 'bangladesh-income-tax-calculator' ),
+                        'dark'    => esc_html__( 'Dark', 'bangladesh-income-tax-calculator' ),
+                        'light'   => esc_html__( 'Light', 'bangladesh-income-tax-calculator' )
                      ],
-                    'description' => esc_html__( 'Choose the visual theme for the tax calculator.', 'income-tax-calculator' )
+                    'description' => esc_html__( 'Choose the visual theme for the tax calculator.', 'bangladesh-income-tax-calculator' )
                  ]
             );
 
@@ -111,7 +111,7 @@
             $this->start_controls_section(
                 'style_section',
                 [
-                    'label' => esc_html__( 'Style', 'income-tax-calculator' ),
+                    'label' => esc_html__( 'Style', 'bangladesh-income-tax-calculator' ),
                     'tab'   => \Elementor\Controls_Manager::TAB_STYLE
                  ]
             );
@@ -119,19 +119,19 @@
             $this->add_responsive_control(
                 'alignment',
                 [
-                    'label'     => esc_html__( 'Alignment', 'income-tax-calculator' ),
+                    'label'     => esc_html__( 'Alignment', 'bangladesh-income-tax-calculator' ),
                     'type'      => \Elementor\Controls_Manager::CHOOSE,
                     'options'   => [
                         'left'   => [
-                            'title' => esc_html__( 'Left', 'income-tax-calculator' ),
+                            'title' => esc_html__( 'Left', 'bangladesh-income-tax-calculator' ),
                             'icon'  => 'eicon-text-align-left'
                          ],
                         'center' => [
-                            'title' => esc_html__( 'Center', 'income-tax-calculator' ),
+                            'title' => esc_html__( 'Center', 'bangladesh-income-tax-calculator' ),
                             'icon'  => 'eicon-text-align-center'
                          ],
                         'right'  => [
-                            'title' => esc_html__( 'Right', 'income-tax-calculator' ),
+                            'title' => esc_html__( 'Right', 'bangladesh-income-tax-calculator' ),
                             'icon'  => 'eicon-text-align-right'
                          ]
                      ],
@@ -145,7 +145,7 @@
             $this->add_responsive_control(
                 'max_width',
                 [
-                    'label'      => esc_html__( 'Max Width', 'income-tax-calculator' ),
+                    'label'      => esc_html__( 'Max Width', 'bangladesh-income-tax-calculator' ),
                     'type'       => \Elementor\Controls_Manager::SLIDER,
                     'size_units' => [ 'px', '%', 'em', 'rem' ],
                     'range'      => [
@@ -171,7 +171,7 @@
             $this->add_responsive_control(
                 'margin',
                 [
-                    'label'      => esc_html__( 'Margin', 'income-tax-calculator' ),
+                    'label'      => esc_html__( 'Margin', 'bangladesh-income-tax-calculator' ),
                     'type'       => \Elementor\Controls_Manager::DIMENSIONS,
                     'size_units' => [ 'px', '%', 'em' ],
                     'selectors'  => [
@@ -183,7 +183,7 @@
             $this->add_responsive_control(
                 'padding',
                 [
-                    'label'      => esc_html__( 'Padding', 'income-tax-calculator' ),
+                    'label'      => esc_html__( 'Padding', 'bangladesh-income-tax-calculator' ),
                     'type'       => \Elementor\Controls_Manager::DIMENSIONS,
                     'size_units' => [ 'px', '%', 'em' ],
                     'selectors'  => [
@@ -218,7 +218,7 @@
             }
 
             // Render the shortcode
-            echo do_shortcode( '[tax_calculator ' . $shortcode_atts . ']' );
+            echo do_shortcode( '[bd_tax_calculator ' . $shortcode_atts . ']' );
         }
 
         /**
@@ -256,7 +256,7 @@
                 </div>
                 <div class="bd-tax-form-body">
                     <p style="text-align: center; padding: 20px; background: rgba(0,0,0,0.05); border-radius: 6px; margin: 0;">
-                        <?php esc_html_e( 'Tax Calculator Preview - Frontend functionality will be available on the published page.', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Tax Calculator Preview - Frontend functionality will be available on the published page.', 'bangladesh-income-tax-calculator' ); ?>
                     </p>
                 </div>
             </div>
@@ -286,6 +286,6 @@
                         $shortcode_atts .= ' title="' . esc_attr( $title ) . '"';
                     }
 
-                    echo esc_html( '[tax_calculator ' . $shortcode_atts . ']' );
+                    echo esc_html( '[bd_tax_calculator ' . $shortcode_atts . ']' );
                 }
         }

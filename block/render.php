@@ -27,4 +27,4 @@ if ( ! empty( trim( $title ) ) ) {
 }
 
 // Render the shortcode
-echo do_shortcode( '[tax_calculator ' . $shortcode_atts . ']' );
+echo do_shortcode( '[bd_tax_calculator ' . $shortcode_atts . ']' );

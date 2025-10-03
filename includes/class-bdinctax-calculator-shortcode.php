@@ -9,7 +9,7 @@
         exit; // Exit if accessed directly.
     }
 
-    class Tax_Calculator_Shortcode
+    class BDIncTax_Calculator_Shortcode
     {
 
         /**
@@ -17,7 +17,7 @@
          */
         public function __construct()
         {
-            add_shortcode( 'tax_calculator', [ $this, 'render_shortcode' ] );
+            add_shortcode( 'bd_tax_calculator', [ $this, 'render_shortcode' ] );
             add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_assets' ] );
             add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
         }
@@ -34,7 +34,7 @@
             $atts = shortcode_atts( [
                 'theme' => 'default',
                 'title' => ''
-             ], $atts, 'tax_calculator' );
+             ], $atts, 'bd_tax_calculator' );
 
             // Sanitize attributes
             $theme          = sanitize_text_field( $atts[ 'theme' ] );
@@ -84,27 +84,27 @@
             <div class="bd-tax-form-body">
                 <div class="bd-tax-field">
                     <label for="taxYear">
-                        <?php esc_html_e( 'Tax Year', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Tax Year', 'bangladesh-income-tax-calculator' ); ?>
                         <span class="required">*</span>
                     </label>
                     <select name="taxYear" id="taxYear" required>
-                        <option value=""><?php esc_html_e( '-- Select Tax Year --', 'income-tax-calculator' ); ?></option>
-                        <option value="2024-25"><?php esc_html_e( '2024-25 or Before', 'income-tax-calculator' ); ?></option>
-                        <option value="2025-26"><?php esc_html_e( '2025-26 or After', 'income-tax-calculator' ); ?></option>
+                        <option value=""><?php esc_html_e( '-- Select Tax Year --', 'bangladesh-income-tax-calculator' ); ?></option>
+                        <option value="2024-25"><?php esc_html_e( '2024-25 or Before', 'bangladesh-income-tax-calculator' ); ?></option>
+                        <option value="2025-26"><?php esc_html_e( '2025-26 or After', 'bangladesh-income-tax-calculator' ); ?></option>
                     </select>
                     <div class="bd-tax-error" style="display: none;"></div>
                 </div>
 
                 <div class="bd-tax-field">
                     <label for="gender">
-                        <?php esc_html_e( 'Gender', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Gender', 'bangladesh-income-tax-calculator' ); ?>
                         <span class="required">*</span>
                     </label>
                     <select name="gender" id="gender" required>
-                        <option value=""><?php esc_html_e( '-- Select --', 'income-tax-calculator' ); ?></option>
-                        <option value="male"><?php esc_html_e( 'Male', 'income-tax-calculator' ); ?></option>
-                        <option value="female"><?php esc_html_e( 'Female', 'income-tax-calculator' ); ?></option>
-                        <option value="third_gender"><?php esc_html_e( 'Third Gender', 'income-tax-calculator' ); ?></option>
+                        <option value=""><?php esc_html_e( '-- Select --', 'bangladesh-income-tax-calculator' ); ?></option>
+                        <option value="male"><?php esc_html_e( 'Male', 'bangladesh-income-tax-calculator' ); ?></option>
+                        <option value="female"><?php esc_html_e( 'Female', 'bangladesh-income-tax-calculator' ); ?></option>
+                        <option value="third_gender"><?php esc_html_e( 'Third Gender', 'bangladesh-income-tax-calculator' ); ?></option>
                     </select>
                     <div class="bd-tax-error" style="display: none;"></div>
                 </div>
@@ -112,21 +112,21 @@
                 <div class="bd-tax-checkboxes">
                     <label class="bd-tax-checkbox">
                         <input type="checkbox" name="above65" />
-                        <?php esc_html_e( 'Above 65 Age', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Above 65 Age', 'bangladesh-income-tax-calculator' ); ?>
                     </label>
                     <label class="bd-tax-checkbox">
                         <input type="checkbox" name="freedomFighter" />
-                        <?php esc_html_e( 'Is Freedom Fighter', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Is Freedom Fighter', 'bangladesh-income-tax-calculator' ); ?>
                     </label>
                     <label class="bd-tax-checkbox">
                         <input type="checkbox" name="disabled" />
-                        <?php esc_html_e( 'Is Disabled', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Is Disabled', 'bangladesh-income-tax-calculator' ); ?>
                     </label>
                 </div>
 
                 <div class="bd-tax-field">
                     <label for="grossIncome">
-                        <?php esc_html_e( 'Gross Income (Yearly, Taka)', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Gross Income (Yearly, Taka)', 'bangladesh-income-tax-calculator' ); ?>
                         <span class="required">*</span>
                     </label>
                     <input type="number" name="grossIncome" id="grossIncome" min="0" step="0.01" required />
@@ -135,7 +135,7 @@
 
                 <div class="bd-tax-field">
                     <label for="totalInvestment">
-                        <?php esc_html_e( 'Total Investment (Yearly, Taka)', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Total Investment (Yearly, Taka)', 'bangladesh-income-tax-calculator' ); ?>
                         <span class="required">*</span>
                     </label>
                     <input type="number" name="totalInvestment" id="totalInvestment" min="0" step="0.01" required />
@@ -144,7 +144,7 @@
 
                 <div class="bd-tax-field">
                     <label for="paidTax">
-                        <?php esc_html_e( 'Paid Tax (Optional, Taka)', 'income-tax-calculator' ); ?>
+                        <?php esc_html_e( 'Paid Tax (Optional, Taka)', 'bangladesh-income-tax-calculator' ); ?>
                     </label>
                     <input type="number" name="paidTax" id="paidTax" min="0" step="0.01" placeholder="0" />
                     <div class="bd-tax-error" style="display: none;"></div>
@@ -153,7 +153,7 @@
 
             <div class="bd-tax-form-footer">
                 <button type="submit" class="bd-tax-submit-btn">
-                    <?php esc_html_e( 'Calculate Tax', 'income-tax-calculator' ); ?>
+                    <?php esc_html_e( 'Calculate Tax', 'bangladesh-income-tax-calculator' ); ?>
                 </button>
             </div>
         </form>
@@ -172,7 +172,7 @@
                 ?>
         <div class="bd-tax-result" style="display: none;">
             <div class="bd-tax-result-header">
-                <h4><?php esc_html_e( 'Tax Calculation Result', 'income-tax-calculator' ); ?></h4>
+                <h4><?php esc_html_e( 'Tax Calculation Result', 'bangladesh-income-tax-calculator' ); ?></h4>
             </div>
 
             <div class="bd-tax-result-body">
@@ -180,15 +180,15 @@
                     <table class="bd-tax-summary-table">
                         <tbody>
                             <tr>
-                                <th><?php esc_html_e( 'Gross Income', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Gross Income', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="gross-income-display">৳0</td>
                             </tr>
                             <tr>
-                                <th><?php esc_html_e( 'Deduction (Gross Income/3 or ৳4,50,000)', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Deduction (Gross Income/3 or ৳4,50,000)', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="deduction-display">৳0</td>
                             </tr>
                             <tr>
-                                <th><?php esc_html_e( 'Taxable Income (After Deduction)', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Taxable Income (After Deduction)', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="taxable-income-display">৳0</td>
                             </tr>
                         </tbody>
@@ -196,14 +196,14 @@
                 </div>
 
                 <div class="bd-tax-slab-section">
-                    <h5><?php esc_html_e( 'Tax Calculation (Slab by Slab)', 'income-tax-calculator' ); ?></h5>
+                    <h5><?php esc_html_e( 'Tax Calculation (Slab by Slab)', 'bangladesh-income-tax-calculator' ); ?></h5>
                     <table class="bd-tax-slab-table">
                         <thead>
                             <tr>
-                                <th><?php esc_html_e( 'Slab Range (৳)', 'income-tax-calculator' ); ?></th>
-                                <th><?php esc_html_e( 'Rate (%)', 'income-tax-calculator' ); ?></th>
-                                <th><?php esc_html_e( 'Taxable Amount', 'income-tax-calculator' ); ?></th>
-                                <th><?php esc_html_e( 'Tax', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Slab Range (৳)', 'bangladesh-income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Rate (%)', 'bangladesh-income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Taxable Amount', 'bangladesh-income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Tax', 'bangladesh-income-tax-calculator' ); ?></th>
                             </tr>
                         </thead>
                         <tbody class="slab-breakdown">
@@ -216,35 +216,35 @@
                     <table class="bd-tax-final-table">
                         <tbody>
                             <tr>
-                                <th><?php esc_html_e( 'Total Tax (Before Rebate)', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Total Tax (Before Rebate)', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="total-tax-display">৳0</td>
                             </tr>
                             <tr>
-                                <th><?php esc_html_e( 'Allowable Investment Used', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Allowable Investment Used', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="allowable-investment-display">৳0</td>
                             </tr>
                             <tr>
-                                <th><?php esc_html_e( 'Rebate A (3% of taxable income)', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Rebate A (3% of taxable income)', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="rebate-a-display">৳0</td>
                             </tr>
                             <tr>
-                                <th><?php esc_html_e( 'Rebate B (15% of applicable investment)', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Rebate B (15% of applicable investment)', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="rebate-b-display">৳0</td>
                             </tr>
                             <tr>
-                                <th><?php esc_html_e( 'Applied Rebate', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Applied Rebate', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="applied-rebate-display">৳0</td>
                             </tr>
                             <tr class="final-tax-row">
-                                <th><?php esc_html_e( 'Final Tax After Rebate', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Final Tax After Rebate', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="final-tax-display">৳0</td>
                             </tr>
                             <tr>
-                                <th><?php esc_html_e( 'Paid Tax', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Paid Tax', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="paid-tax-display">৳0</td>
                             </tr>
                             <tr class="payable-tax-row">
-                                <th><?php esc_html_e( 'Payable Tax', 'income-tax-calculator' ); ?></th>
+                                <th><?php esc_html_e( 'Payable Tax', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="payable-tax-display">৳0</td>
                             </tr>
                         </tbody>
@@ -274,17 +274,17 @@
                     // Only register assets, enqueue when shortcode is used
                     wp_register_script(
                         'bd-tax-calculator-frontend',
-                        BD_TAX_CALC_PLUGIN_URL . 'assets/js/frontend.js',
+                        BDINCTAX_CALC_PLUGIN_URL . 'assets/js/frontend.js',
                         [  ],
-                        BD_TAX_CALC_VERSION,
+                        BDINCTAX_CALC_VERSION,
                         true
                     );
 
                     wp_register_style(
                         'bd-tax-calculator-frontend',
-                        BD_TAX_CALC_PLUGIN_URL . 'assets/css/frontend.css',
+                        BDINCTAX_CALC_PLUGIN_URL . 'assets/css/frontend.css',
                         [  ],
-                        BD_TAX_CALC_VERSION
+                        BDINCTAX_CALC_VERSION
                     );
                 }
 
@@ -296,17 +296,17 @@
                     // Register for admin use (Gutenberg editor)
                     wp_register_script(
                         'bd-tax-calculator-frontend',
-                        BD_TAX_CALC_PLUGIN_URL . 'assets/js/frontend.js',
+                        BDINCTAX_CALC_PLUGIN_URL . 'assets/js/frontend.js',
                         [  ],
-                        BD_TAX_CALC_VERSION,
+                        BDINCTAX_CALC_VERSION,
                         true
                     );
 
                     wp_register_style(
                         'bd-tax-calculator-frontend',
-                        BD_TAX_CALC_PLUGIN_URL . 'assets/css/frontend.css',
+                        BDINCTAX_CALC_PLUGIN_URL . 'assets/css/frontend.css',
                         [  ],
-                        BD_TAX_CALC_VERSION
+                        BDINCTAX_CALC_VERSION
                     );
                 }
 

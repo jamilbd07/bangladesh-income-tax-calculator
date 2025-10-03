@@ -4,11 +4,12 @@
  * Description:       A comprehensive tax calculator for Bangladesh with shortcode, block editor, and Elementor widget support. Features multiple themes and responsive design.
  * Version:           1.0.0
  * Author:            MD Jamil Uddin
+ * Author URI:        https://jamiluddin.me
  * License:           GPLv3
  * License URI:       https://opensource.org/licenses/GPL-3.0
- * Text Domain:       income-tax-calculator
+ * Text Domain:       bangladesh-income-tax-calculator
  *
- * @package TaxCalculatorBangladesh
+ * @package BDIncTaxCalculator
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,14 +17,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants
-define( 'BD_TAX_CALC_VERSION', '1.0.0' );
-define( 'BD_TAX_CALC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'BD_TAX_CALC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'BDINCTAX_CALC_VERSION', '1.0.0' );
+define( 'BDINCTAX_CALC_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'BDINCTAX_CALC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * Main plugin class
  */
-class Bangladesh_Tax_Calculator
+class BDIncTax_Calculator
 {
 
     /**
@@ -53,11 +54,11 @@ class Bangladesh_Tax_Calculator
      */
     private function load_dependencies()
     {
-        require_once BD_TAX_CALC_PLUGIN_DIR . 'includes/class-tax-calculator-shortcode.php';
+        require_once BDINCTAX_CALC_PLUGIN_DIR . 'includes/class-bdinctax-calculator-shortcode.php';
 
         // Load Elementor widget only if Elementor is active
         if ( did_action( 'elementor/loaded' ) ) {
-            require_once BD_TAX_CALC_PLUGIN_DIR . 'includes/class-tax-calculator-elementor-widget.php';
+            require_once BDINCTAX_CALC_PLUGIN_DIR . 'includes/class-bdinctax-calculator-elementor-widget.php';
         }
     }
 
@@ -66,7 +67,7 @@ class Bangladesh_Tax_Calculator
      */
     private function init_shortcode()
     {
-        new Tax_Calculator_Shortcode();
+        new BDIncTax_Calculator_Shortcode();
     }
 
     /**
@@ -74,7 +75,7 @@ class Bangladesh_Tax_Calculator
      */
     private function init_gutenberg_block()
     {
-        register_block_type( BD_TAX_CALC_PLUGIN_DIR . 'block/' );
+        register_block_type( BDINCTAX_CALC_PLUGIN_DIR . 'block/' );
     }
 
     /**
@@ -92,11 +93,11 @@ class Bangladesh_Tax_Calculator
      */
     public function register_elementor_widget()
     {
-        if ( class_exists( 'Tax_Calculator_Elementor_Widget' ) ) {
-            \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Tax_Calculator_Elementor_Widget() );
+        if ( class_exists( 'BDIncTax_Calculator_Elementor_Widget' ) ) {
+            \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new BDIncTax_Calculator_Elementor_Widget() );
         }
     }
 }
 
 // Initialize the plugin
-new Bangladesh_Tax_Calculator();
+new BDIncTax_Calculator();

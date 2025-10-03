@@ -18,7 +18,7 @@ The **Bangladesh Tax Calculator** is a powerful WordPress plugin that provides m
 
 = 🚀 Multiple Integration Options =
 
-* **Shortcode**: Use `[tax_calculator]` anywhere in posts, pages, or widgets
+* **Shortcode**: Use `[bd_tax_calculator]` anywhere in posts, pages, or widgets
 * **Block Editor**: Visual block editor integration with live preview
 * **Elementor Widget**: Drag-and-drop page builder support (requires Elementor)
 
@@ -72,7 +72,7 @@ The **Bangladesh Tax Calculator** is a powerful WordPress plugin that provides m
 
 = After Installation =
 
-* **Shortcode**: Use `[tax_calculator]` in any post, page, or widget
+* **Shortcode**: Use `[bd_tax_calculator]` in any post, page, or widget
 * **Block Editor**: Search for "Tax Calculator Bangladesh" in the block editor
 * **Elementor Widget**: Find "Tax Calculator Bangladesh" in the General category
 
@@ -81,16 +81,16 @@ The **Bangladesh Tax Calculator** is a powerful WordPress plugin that provides m
 = Shortcode Usage =
 
 Basic usage:
-`[tax_calculator]`
+`[bd_tax_calculator]`
 
 With custom title:
-`[tax_calculator title="Calculate Your Income Tax"]`
+`[bd_tax_calculator title="Calculate Your Income Tax"]`
 
 With theme selection:
-`[tax_calculator theme="dark"]`
+`[bd_tax_calculator theme="dark"]`
 
 Combined parameters:
-`[tax_calculator title="Tax Calculator 2025" theme="light"]`
+`[bd_tax_calculator title="Tax Calculator 2025" theme="light"]`
 
 = Shortcode Parameters =
 
@@ -146,6 +146,11 @@ The Elementor widget only works if you have Elementor installed. However, you ca
 = How accurate are the calculations? =
 
 The calculations are based on official NBR guidelines and are regularly updated. However, this is for informational purposes only - always consult a tax professional for official compliance.
+
+== Source Code ==
+
+You can find the full source code, contribute, or report issues on GitHub:  
+[https://github.com/jamilbd07/income-tax-calculator.git](https://github.com/jamilbd07/income-tax-calculator.git)
 
 == Screenshots ==
 

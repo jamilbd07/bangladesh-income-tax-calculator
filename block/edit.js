@@ -22,9 +22,9 @@ import './editor.scss';
 
 // Theme options for the block
 const THEME_OPTIONS = [
-	{ label: __('Default', 'income-tax-calculator'), value: 'default' },
-	{ label: __('Dark', 'income-tax-calculator'), value: 'dark' },
-	{ label: __('Light', 'income-tax-calculator'), value: 'light' },
+	{ label: __('Default', 'bangladesh-income-tax-calculator'), value: 'default' },
+	{ label: __('Dark', 'bangladesh-income-tax-calculator'), value: 'dark' },
+	{ label: __('Light', 'bangladesh-income-tax-calculator'), value: 'light' },
 ];
 export default function Edit({ attributes, setAttributes }) {
 	const blockProps = useBlockProps();
@@ -42,19 +42,19 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Settings', 'income-tax-calculator')}>
+				<PanelBody title={__('Settings', 'bangladesh-income-tax-calculator')}>
 					<TextControl
-						label={__('Title', 'income-tax-calculator')}
+						label={__('Title', 'bangladesh-income-tax-calculator')}
 						value={title}
 						onChange={onTitleChange}
-						help={__('Leave empty if you don\'t want to show the title.', 'income-tax-calculator')}
+						help={__('Leave empty if you don\'t want to show the title.', 'bangladesh-income-tax-calculator')}
 					/>
 					<SelectControl
-						label={__('Theme', 'income-tax-calculator')}
+						label={__('Theme', 'bangladesh-income-tax-calculator')}
 						value={theme}
 						options={THEME_OPTIONS}
 						onChange={onThemeChange}
-						help={__('Choose the visual theme for the tax calculator.', 'income-tax-calculator')}
+						help={__('Choose the visual theme for the tax calculator.', 'bangladesh-income-tax-calculator')}
 					/>
 				</PanelBody>
 			</InspectorControls>
@@ -79,7 +79,7 @@ export default function Edit({ attributes, setAttributes }) {
 								margin: '0',
 								color: theme === 'dark' ? '#bdc3c7' : '#666'
 							}}>
-								{__('Tax Calculator Preview - Frontend functionality will be available on the published page.', 'income-tax-calculator')}
+								{__('Tax Calculator Preview - Frontend functionality will be available on the published page.', 'bangladesh-income-tax-calculator')}
 							</p>
 						</div>
 					</div>

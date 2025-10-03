@@ -1,9 +1,9 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tax-calculator/tax-calculator-bangladesh",
+	"name": "tax-calculator/bangladesh-income-tax-calculator",
 	"version": "1.0.0",
-	"title": "Tax Calculator Bangladesh",
+	"title": "Bangladesh Income Tax Calculator",
 	"category": "widgets",
 	"icon": "calculator",
 	"description": "User-friendly tax calculator for FY 2025-2026 in Bangladesh with multiple themes and responsive design.",
@@ -26,7 +26,7 @@
 	"supports": {
 		"html": false
 	},
-	"textdomain": "tax-calculator",
+	"textdomain": "bangladesh-income-tax-calculator",
 	"editorScript": "file:../build/index.js",
 	"editorStyle": "file:../build/index.css",
 	"style": "file:../build/style-index.css",
