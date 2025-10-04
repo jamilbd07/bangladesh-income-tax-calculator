@@ -135,6 +135,55 @@
         };
     }
 
+    function calculateMinimumTax(area, totalTaxBeforeRebate, finalTaxAfterRebate) {
+        // Only apply minimum tax if there was tax before rebate
+        if (totalTaxBeforeRebate <= 0) {
+            return {
+                minimumTax: 0,
+                isMinimumTaxApplied: false,
+                message: ''
+            };
+        }
+
+        let minimumTaxAmount = 0;
+        let areaName = '';
+
+        switch (area) {
+            case 'dhaka_chattogram':
+                minimumTaxAmount = 5000;
+                areaName = 'Dhaka/Chattagram City Corporation';
+                break;
+            case 'other_city':
+                minimumTaxAmount = 4000;
+                areaName = 'Other City Corporation';
+                break;
+            case 'outside_city':
+                minimumTaxAmount = 3000;
+                areaName = 'Out of the City Corporation';
+                break;
+            default:
+                return {
+                    minimumTax: finalTaxAfterRebate,
+                    isMinimumTaxApplied: false,
+                    message: ''
+                };
+        }
+
+        if (finalTaxAfterRebate < minimumTaxAmount) {
+            return {
+                minimumTax: minimumTaxAmount,
+                isMinimumTaxApplied: true,
+                message: `Minimum tax of ৳${minimumTaxAmount.toLocaleString('en-BD')} applied for ${areaName} area.`
+            };
+        }
+
+        return {
+            minimumTax: finalTaxAfterRebate,
+            isMinimumTaxApplied: false,
+            message: ''
+        };
+    }
+
     // Form validation and error display functions
     function showError(fieldName, message, form) {
         const field = form.querySelector(`[name="${fieldName}"]`);
@@ -178,6 +227,10 @@
 
         if (!formData.taxYear) {
             errors.taxYear = 'Tax Year is required';
+        }
+
+        if (!formData.area) {
+            errors.area = 'Area is required';
         }
 
         if (!formData.gender) {
@@ -238,7 +291,27 @@
         safeUpdateText('.rebate-a-display', formatTaka(result.rebateData.rebateA));
         safeUpdateText('.rebate-b-display', formatTaka(result.rebateData.rebateB));
         safeUpdateText('.applied-rebate-display', formatTaka(result.rebateData.rebate));
-        safeUpdateText('.final-tax-display', formatTaka(result.finalTax));
+        safeUpdateText('.final-tax-display', formatTaka(result.finalTaxBeforeMinimum));
+
+        // Handle minimum tax display
+        const minimumTaxRow = resultContainer.querySelector('.minimum-tax-row');
+        const minimumTaxMessageRow = resultContainer.querySelector('.minimum-tax-message-row');
+
+        if (result.minimumTaxData.isMinimumTaxApplied) {
+            safeUpdateText('.minimum-tax-display', formatTaka(result.minimumTaxData.minimumTax));
+            minimumTaxRow.style.display = 'table-row';
+
+            // Show minimum tax message
+            const messageElement = resultContainer.querySelector('.minimum-tax-message');
+            if (messageElement) {
+                messageElement.textContent = result.minimumTaxData.message;
+            }
+            minimumTaxMessageRow.style.display = 'table-row';
+        } else {
+            minimumTaxRow.style.display = 'none';
+            minimumTaxMessageRow.style.display = 'none';
+        }
+
         safeUpdateText('.paid-tax-display', formatTaka(result.paidTax));
         safeUpdateText('.payable-tax-display', formatTaka(result.payableTax));
 
@@ -276,6 +349,7 @@
         const formData = new FormData(form);
         const data = {
             taxYear: formData.get('taxYear') || '',
+            area: formData.get('area') || '',
             gender: formData.get('gender') || '',
             above65: formData.has('above65'),
             freedomFighter: formData.has('freedomFighter'),
@@ -320,7 +394,11 @@
 
         const { breakdown, totalTax } = calculateTaxSlabs(taxableIncomeData.taxableIncome, values.taxYear, personalInfo);
         const rebateData = calculateInvestmentRebate(taxableIncomeData.taxableIncome, values.totalInvestment, totalTax);
-        const finalTax = Math.max(0, totalTax - rebateData.rebate);
+        const finalTaxBeforeMinimum = Math.max(0, totalTax - rebateData.rebate);
+
+        // Calculate minimum tax
+        const minimumTaxData = calculateMinimumTax(values.area, totalTax, finalTaxBeforeMinimum);
+        const finalTax = minimumTaxData.minimumTax;
         const payableTax = finalTax - values.paidTax;
 
         const result = {
@@ -329,6 +407,8 @@
             breakdown,
             totalTax,
             rebateData,
+            finalTaxBeforeMinimum,
+            minimumTaxData,
             finalTax,
             paidTax: values.paidTax,
             payableTax: payableTax

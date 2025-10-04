@@ -1,4 +1,4 @@
-# Bangladesh Tax Calculator - WordPress Plugin
+# Bangladesh Income Tax Calculator - WordPress Plugin
 
 A comprehensive WordPress plugin for calculating personal income tax in Bangladesh. This plugin provides multiple integration options including **Shortcode**, **Block Editor**, and **Elementor Widget** with support for both current and previous tax regimes.
 

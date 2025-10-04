@@ -96,6 +96,20 @@
                 </div>
 
                 <div class="bd-tax-field">
+                    <label for="area">
+                        <?php esc_html_e( 'Area', 'bangladesh-income-tax-calculator' ); ?>
+                        <span class="required">*</span>
+                    </label>
+                    <select name="area" id="area" required>
+                        <option value=""><?php esc_html_e( '-- Select Area --', 'bangladesh-income-tax-calculator' ); ?></option>
+                        <option value="dhaka_chattogram"><?php esc_html_e( 'Dhaka/Chattagram City Corporation', 'bangladesh-income-tax-calculator' ); ?></option>
+                        <option value="other_city"><?php esc_html_e( 'Other City Corporation', 'bangladesh-income-tax-calculator' ); ?></option>
+                        <option value="outside_city"><?php esc_html_e( 'Out of the City Corporation', 'bangladesh-income-tax-calculator' ); ?></option>
+                    </select>
+                    <div class="bd-tax-error" style="display: none;"></div>
+                </div>
+
+                <div class="bd-tax-field">
                     <label for="gender">
                         <?php esc_html_e( 'Gender', 'bangladesh-income-tax-calculator' ); ?>
                         <span class="required">*</span>
@@ -238,6 +252,15 @@
                             <tr class="final-tax-row">
                                 <th><?php esc_html_e( 'Final Tax After Rebate', 'bangladesh-income-tax-calculator' ); ?></th>
                                 <td class="final-tax-display">৳0</td>
+                            </tr>
+                            <tr class="minimum-tax-row" style="display: none;">
+                                <th><?php esc_html_e( 'Minimum Tax Applied', 'bangladesh-income-tax-calculator' ); ?></th>
+                                <td class="minimum-tax-display">৳0</td>
+                            </tr>
+                            <tr class="minimum-tax-message-row" style="display: none;">
+                                <td colspan="2" class="minimum-tax-message" style="font-style: italic; color: #666; text-align: center; padding: 10px;">
+                                    <!-- Minimum tax message will be inserted here -->
+                                </td>
                             </tr>
                             <tr>
                                 <th><?php esc_html_e( 'Paid Tax', 'bangladesh-income-tax-calculator' ); ?></th>
