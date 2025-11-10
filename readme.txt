@@ -1,5 +1,5 @@
 
-=== Bangladesh Income Tax Calculator – Personal Tax Calculation with Elementor Widget & Block Editor ===
+=== Bangladesh Income Tax Calculator ===
 
 Contributors:      jamilbd07
 Tags:              tax calculator, bangladesh, income tax, shortcode, elementor

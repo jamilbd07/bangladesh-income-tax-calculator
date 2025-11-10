@@ -17,7 +17,7 @@
          */
         public function __construct()
         {
-            add_shortcode( 'bd_tax_calculator', [ $this, 'render_shortcode' ] );
+            add_shortcode( 'bd_tax_calculator', [ $this, 'bdinctax_render_shortcode' ] );
             add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_assets' ] );
             add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
         }
@@ -28,7 +28,7 @@
          * @param array $atts Shortcode attributes
          * @return string HTML output
          */
-        public function render_shortcode( $atts )
+        public function bdinctax_render_shortcode( $atts )
         {
             // Parse shortcode attributes
             $atts = shortcode_atts( [
