@@ -14,7 +14,7 @@ $bdinctax_selected_theme = isset( $attributes[ 'theme' ] ) ? sanitize_text_field
 $title                   = isset( $attributes[ 'title' ] ) ? sanitize_text_field( $attributes[ 'title' ] ) : '';
 
 // Validate theme
-$bdinctax_allowed_themes = [ 'default', 'dark', 'light' ];
+$bdinctax_allowed_themes = array( 'default', 'dark', 'light' );
 if ( ! in_array( $bdinctax_selected_theme, $bdinctax_allowed_themes ) ) {
     $bdinctax_selected_theme = 'default';
 }
@@ -27,4 +27,4 @@ if ( ! empty( trim( $title ) ) ) {
 }
 
 // Render the shortcode
-echo do_shortcode( '[bd_tax_calculator ' . $bdinctax_shortcode_atts . ']' );
+echo do_shortcode( '[bangladesh_income_tax_calculator ' . $bdinctax_shortcode_atts . ']' );

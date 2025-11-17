@@ -9,17 +9,15 @@
         exit; // Exit if accessed directly.
     }
 
-    class BDIncTax_Calculator_Shortcode
-    {
+    class BDIncTax_Calculator_Shortcode {
 
         /**
          * Constructor
          */
-        public function __construct()
-        {
-            add_shortcode( 'bd_tax_calculator', [ $this, 'bdinctax_render_shortcode' ] );
-            add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_assets' ] );
-            add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
+        public function __construct() {
+            add_shortcode( 'bangladesh_income_tax_calculator', array( $this, 'bdinctax_render_shortcode' ) );
+            add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
+            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
         }
 
         /**
@@ -28,18 +26,17 @@
          * @param array $atts Shortcode attributes
          * @return string HTML output
          */
-        public function bdinctax_render_shortcode( $atts )
-        {
+        public function bdinctax_render_shortcode( $atts ) {
             // Parse shortcode attributes
-            $atts = shortcode_atts( [
+            $atts = shortcode_atts( array(
                 'theme' => 'default',
                 'title' => ''
-             ], $atts, 'bd_tax_calculator' );
+            ), $atts, 'bangladesh_income_tax_calculator' );
 
             // Sanitize attributes
             $theme          = sanitize_text_field( $atts[ 'theme' ] );
             $title          = sanitize_text_field( $atts[ 'title' ] );
-            $allowed_themes = [ 'default', 'dark', 'light' ];
+            $allowed_themes = array( 'default', 'dark', 'light' );
             if ( ! in_array( $theme, $allowed_themes ) ) {
                 $theme = 'default';
             }
@@ -70,8 +67,7 @@
                  * @param string $title The title to display
                  * @return string Form HTML
                  */
-                private function get_form_html( $title = 'Tax Calculator' )
-                {
+                private function get_form_html( $title = 'Tax Calculator' ) {
                     ob_start();
                 ?>
         <form class="bd-tax-form" method="post">
@@ -180,8 +176,7 @@
                  *
                  * @return string Result HTML
                  */
-                private function get_result_html()
-                {
+                private function get_result_html() {
                     ob_start();
                 ?>
         <div class="bd-tax-result" style="display: none;">
@@ -282,8 +277,7 @@
                 /**
                  * Enqueue shortcode-specific assets
                  */
-                private function enqueue_shortcode_assets()
-                {
+                private function enqueue_shortcode_assets() {
                     // This will be called when shortcode is rendered
                     wp_enqueue_script( 'bd-tax-calculator-frontend' );
                     wp_enqueue_style( 'bd-tax-calculator-frontend' );
@@ -292,13 +286,12 @@
                 /**
                  * Enqueue frontend assets
                  */
-                public function enqueue_frontend_assets()
-                {
+                public function enqueue_frontend_assets() {
                     // Only register assets, enqueue when shortcode is used
                     wp_register_script(
                         'bd-tax-calculator-frontend',
                         BDINCTAX_CALC_PLUGIN_URL . 'assets/js/frontend.js',
-                        [  ],
+                        array(),
                         BDINCTAX_CALC_VERSION,
                         true
                     );
@@ -306,7 +299,7 @@
                     wp_register_style(
                         'bd-tax-calculator-frontend',
                         BDINCTAX_CALC_PLUGIN_URL . 'assets/css/frontend.css',
-                        [  ],
+                        array(),
                         BDINCTAX_CALC_VERSION
                     );
                 }
@@ -314,13 +307,12 @@
                 /**
                  * Enqueue admin assets
                  */
-                public function enqueue_admin_assets()
-                {
+                public function enqueue_admin_assets() {
                     // Register for admin use (Gutenberg editor)
                     wp_register_script(
                         'bd-tax-calculator-frontend',
                         BDINCTAX_CALC_PLUGIN_URL . 'assets/js/frontend.js',
-                        [  ],
+                        array(),
                         BDINCTAX_CALC_VERSION,
                         true
                     );
@@ -328,7 +320,7 @@
                     wp_register_style(
                         'bd-tax-calculator-frontend',
                         BDINCTAX_CALC_PLUGIN_URL . 'assets/css/frontend.css',
-                        [  ],
+                        array(),
                         BDINCTAX_CALC_VERSION
                     );
                 }
@@ -339,159 +331,158 @@
                  *
                  * @return array Allowed HTML Array
                  */
-                private function kses_allowed_html()
-                {
-                    return [
+                private function kses_allowed_html() {
+                    return array(
                         // Basic HTML elements
-                        'div'      => [
-                            'class' => [  ],
-                            'id'    => [  ],
-                            'style' => [  ]
-                         ],
-                        'span'     => [
-                            'class' => [  ],
-                            'id'    => [  ]
-                         ],
-                        'p'        => [
-                            'class' => [  ]
-                         ],
-                        'h1'       => [
-                            'class' => [  ]
-                         ],
-                        'h2'       => [
-                            'class' => [  ]
-                         ],
-                        'h3'       => [
-                            'class' => [  ]
-                         ],
-                        'h4'       => [
-                            'class' => [  ]
-                         ],
-                        'h5'       => [
-                            'class' => [  ]
-                         ],
-                        'h6'       => [
-                            'class' => [  ]
-                         ],
-                        'strong'   => [  ],
-                        'em'       => [  ],
-                        'br'       => [  ],
-                        'hr'       => [  ],
+                        'div' => array(
+                            'class' => array(),
+                            'id' => array(),
+                            'style' => array()
+                        ),
+                        'span' => array(
+                            'class' => array(),
+                            'id' => array()
+                        ),
+                        'p' => array(
+                            'class' => array()
+                        ),
+                        'h1' => array(
+                            'class' => array()
+                        ),
+                        'h2' => array(
+                            'class' => array()
+                        ),
+                        'h3' => array(
+                            'class' => array()
+                        ),
+                        'h4' => array(
+                            'class' => array()
+                        ),
+                        'h5' => array(
+                            'class' => array()
+                        ),
+                        'h6' => array(
+                            'class' => array()
+                        ),
+                        'strong' => array(),
+                        'em' => array(),
+                        'br' => array(),
+                        'hr' => array(),
 
                         // Form elements
-                        'form'     => [
-                            'class'  => [  ],
-                            'id'     => [  ],
-                            'method' => [  ],
-                            'action' => [  ]
-                         ],
-                        'input'    => [
-                            'type'        => [  ],
-                            'name'        => [  ],
-                            'id'          => [  ],
-                            'class'       => [  ],
-                            'value'       => [  ],
-                            'placeholder' => [  ],
-                            'required'    => [  ],
-                            'min'         => [  ],
-                            'max'         => [  ],
-                            'step'        => [  ],
-                            'checked'     => [  ],
-                            'disabled'    => [  ],
-                            'readonly'    => [  ]
-                         ],
-                        'select'   => [
-                            'name'     => [  ],
-                            'id'       => [  ],
-                            'class'    => [  ],
-                            'required' => [  ],
-                            'disabled' => [  ]
-                         ],
-                        'option'   => [
-                            'value'    => [  ],
-                            'selected' => [  ]
-                         ],
-                        'textarea' => [
-                            'name'        => [  ],
-                            'id'          => [  ],
-                            'class'       => [  ],
-                            'rows'        => [  ],
-                            'cols'        => [  ],
-                            'placeholder' => [  ],
-                            'required'    => [  ],
-                            'disabled'    => [  ],
-                            'readonly'    => [  ]
-                         ],
-                        'label'    => [
-                            'for'   => [  ],
-                            'class' => [  ]
-                         ],
-                        'button'   => [
-                            'type'     => [  ],
-                            'class'    => [  ],
-                            'id'       => [  ],
-                            'disabled' => [  ]
-                         ],
-                        'fieldset' => [
-                            'class' => [  ]
-                         ],
-                        'legend'   => [
-                            'class' => [  ]
-                         ],
+                        'form' => array(
+                            'class' => array(),
+                            'id' => array(),
+                            'method' => array(),
+                            'action' => array()
+                        ),
+                        'input' => array(
+                            'type' => array(),
+                            'name' => array(),
+                            'id' => array(),
+                            'class' => array(),
+                            'value' => array(),
+                            'placeholder' => array(),
+                            'required' => array(),
+                            'min' => array(),
+                            'max' => array(),
+                            'step' => array(),
+                            'checked' => array(),
+                            'disabled' => array(),
+                            'readonly' => array()
+                        ),
+                        'select' => array(
+                            'name' => array(),
+                            'id' => array(),
+                            'class' => array(),
+                            'required' => array(),
+                            'disabled' => array()
+                        ),
+                        'option' => array(
+                            'value' => array(),
+                            'selected' => array()
+                        ),
+                        'textarea' => array(
+                            'name' => array(),
+                            'id' => array(),
+                            'class' => array(),
+                            'rows' => array(),
+                            'cols' => array(),
+                            'placeholder' => array(),
+                            'required' => array(),
+                            'disabled' => array(),
+                            'readonly' => array()
+                        ),
+                        'label' => array(
+                            'for' => array(),
+                            'class' => array()
+                        ),
+                        'button' => array(
+                            'type' => array(),
+                            'class' => array(),
+                            'id' => array(),
+                            'disabled' => array()
+                        ),
+                        'fieldset' => array(
+                            'class' => array()
+                        ),
+                        'legend' => array(
+                            'class' => array()
+                        ),
 
                         // List elements
-                        'ul'       => [
-                            'class' => [  ]
-                         ],
-                        'ol'       => [
-                            'class' => [  ]
-                         ],
-                        'li'       => [
-                            'class' => [  ]
-                         ],
+                        'ul' => array(
+                            'class' => array()
+                        ),
+                        'ol' => array(
+                            'class' => array()
+                        ),
+                        'li' => array(
+                            'class' => array()
+                        ),
 
                         // Table elements (for result display)
-                        'table'    => [
-                            'class' => [  ]
-                         ],
-                        'thead'    => [
-                            'class' => [  ]
-                         ],
-                        'tbody'    => [
-                            'class' => [  ]
-                         ],
-                        'tfoot'    => [  ],
-                        'tr'       => [
-                            'class' => [  ]
-                         ],
-                        'th'       => [
-                            'class'   => [  ],
-                            'colspan' => [  ],
-                            'rowspan' => [  ]
-                         ],
-                        'td'       => [
-                            'class'   => [  ],
-                            'colspan' => [  ],
-                            'rowspan' => [  ]
-                         ],
+                        'table' => array(
+                            'class' => array()
+                        ),
+                        'thead' => array(
+                            'class' => array()
+                        ),
+                        'tbody' => array(
+                            'class' => array()
+                        ),
+                        'tfoot' => array(),
+                        'tr' => array(
+                            'class' => array()
+                        ),
+                        'th' => array(
+                            'class' => array(),
+                            'colspan' => array(),
+                            'rowspan' => array()
+                        ),
+                        'td' => array(
+                            'class' => array(),
+                            'colspan' => array(),
+                            'rowspan' => array()
+                        ),
 
                         // Links
-                        'a'        => [
-                            'href'   => [  ],
-                            'class'  => [  ],
-                            'id'     => [  ],
-                            'target' => [  ],
-                            'rel'    => [  ]
-                         ],
+                        'a' => array(
+                            'href' => array(),
+                            'class' => array(),
+                            'id' => array(),
+                            'target' => array(),
+                            'rel' => array()
+                        ),
 
                         // Images
-                        'img'      => [
-                            'src'    => [  ],
-                            'alt'    => [  ],
-                            'class'  => [  ],
-                            'width'  => [  ],
-                            'height' => [  ]
-                         ]
-                     ];
+                        'img' => array(
+                            'src' => array(),
+                            'alt' => array(),
+                            'class' => array(),
+                            'width' => array(),
+                            'height' => array()
+                        )
+                    );
                 }
         }

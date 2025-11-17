@@ -18,7 +18,7 @@ The **Bangladesh Tax Calculator** is a powerful WordPress plugin that provides m
 
 = 🚀 Multiple Integration Options =
 
-* **Shortcode**: Use `[bd_tax_calculator]` anywhere in posts, pages, or widgets
+* **Shortcode**: Use `[bangladesh_income_tax_calculator]` anywhere in posts, pages, or widgets
 * **Block Editor**: Visual block editor integration with live preview
 * **Elementor Widget**: Drag-and-drop page builder support (requires Elementor)
 
@@ -72,7 +72,7 @@ The **Bangladesh Tax Calculator** is a powerful WordPress plugin that provides m
 
 = After Installation =
 
-* **Shortcode**: Use `[bd_tax_calculator]` in any post, page, or widget
+* **Shortcode**: Use `[bangladesh_income_tax_calculator]` in any post, page, or widget
 * **Block Editor**: Search for "Tax Calculator Bangladesh" in the block editor
 * **Elementor Widget**: Find "Tax Calculator Bangladesh" in the General category
 
@@ -81,16 +81,16 @@ The **Bangladesh Tax Calculator** is a powerful WordPress plugin that provides m
 = Shortcode Usage =
 
 Basic usage:
-`[bd_tax_calculator]`
+`[bangladesh_income_tax_calculator]`
 
 With custom title:
-`[bd_tax_calculator title="Calculate Your Income Tax"]`
+`[bangladesh_income_tax_calculator title="Calculate Your Income Tax"]`
 
 With theme selection:
-`[bd_tax_calculator theme="dark"]`
+`[bangladesh_income_tax_calculator theme="dark"]`
 
 Combined parameters:
-`[bd_tax_calculator title="Tax Calculator 2025" theme="light"]`
+`[bangladesh_income_tax_calculator title="Tax Calculator 2025" theme="light"]`
 
 = Shortcode Parameters =
 
